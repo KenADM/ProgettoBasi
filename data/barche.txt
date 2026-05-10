@@ -1,0 +1,100 @@
+Athara,2003,24000,T
+Bithia,2001,24000,T
+Janas,2002,24000,T
+Sharden,2005,29000,T
+Moby Aki,2005,22000,T
+Moby Wonder,2001,22000,T
+Moby Dada,1981,15000,T
+Moby Tommy,2002,21000,T
+Excelsior,1999,23000,T
+Excellent,1998,23000,T
+Superba,2002,30000,T
+Splendid,1994,20000,T
+Venezia,2004,18000,T
+Florencia,2004,18000,T
+Cartour Delta,2010,12000,T
+Caronte,1974,5000,T
+Telepass,1998,4500,T
+Zancle,2006,5000,T
+SNAV Adriatico,1986,16000,T
+SNAV Toscana,1981,14000,T
+SNAV Lazio,1989,12000,T
+SNAV Sardegna,1989,12000,T
+Isola di Procida,1999,350,A
+Isola di Vulcano,1998,350,A
+Isola di Stromboli,1999,350,A
+Isola di Capri,1998,350,A
+Isola di Ponza,2001,350,A
+Don Francesco,2000,400,K
+Acapulco Jet,1999,380,K
+Schiopparello Jet,2000,380,K
+Giglio Jet,2000,380,K
+Grecale,1992,200,A
+Scirocco,1992,200,A
+Alnilam,1996,150,A
+Ammari,1996,150,A
+Gianni M,2005,450,K
+Platone,1990,250,A
+Vesuvio,1991,250,A
+Eschilo,1993,250,A
+Zeusi,1994,250,A
+Moby Vincent,1974,10000,T
+Moby Niki,1974,9000,T
+Moby Baby,1966,4000,T
+Moby Love,1975,5000,T
+Moby Ale,1969,2000,T
+Moby Zaza,1982,12000,T
+Moby Kiss,1975,8000,T
+Moby Corse,1978,11000,T
+Moby Fantasy,2023,35000,T
+Moby Legacy,2024,35000,T
+Eurocargo Salerno,1998,15000,C
+Eurocargo Istanbul,1998,15000,C
+Eurocargo Malta,1999,16000,C
+Eurocargo Venezia,2000,16000,C
+Eurocargo Trieste,1997,14000,C
+Sardinia Regina,1972,11000,T
+Sardinia Vera,1975,10000,T
+Corsica Marina,1974,9000,T
+Corsica Victoria,1973,11000,T
+Corsica Express Three,1996,400,K
+Pascal Lota,2008,18000,T
+Mega Andrea,1986,20000,T
+Mega Smeralda,1985,20000,T
+Aurelia,1980,11000,T
+Grande Napoli,2002,18000,C
+Grande Sicilia,2003,18000,C
+Grande San Paolo,2003,19000,C
+Grande Amburgo,2001,17000,C
+Grande Nigeria,2001,17000,C
+GNV Polaris,2020,18000,T
+GNV Sealand,2009,16000,T
+GNV Bridge,2021,17000,T
+SNAV Pegasus,1978,11000,T
+SNAV Orion,2005,400,K
+SNAV Shaula,1986,220,A
+SNAV Aries,2005,400,K
+SNAV Auriga,2005,400,K
+SNAV Antares,2005,400,K
+SNAV Altair,2005,400,K
+SNAV Aldebaran,2005,400,K
+SNAV Sirius,2005,400,K
+SNAV Vega,2005,400,K
+Ammari Jet,2003,320,K
+Ercolano Jet,2003,320,K
+Selinunte Jet,2004,320,K
+Prampolini Jet,2004,320,K
+Motonave Cristina,2015,120,M
+Motonave Freccia,2018,90,M
+Motonave Venus,2012,110,M
+Motonave Albatros,2020,130,M
+Pietro Novelli,1979,6000,T
+Antonello da Messina,1988,6500,T
+Filippo Lippi,1990,6500,T
+Isola di Vulcano,2000,350,A
+Isola di Ustica,1990,320,A
+Isola di Stromboli,1990,320,A
+Isola di Capraia,1999,350,A
+Motonave Nautilus,2010,80,M
+Motonave Calypso,2014,95,M
+Motonave Stella,2016,105,M

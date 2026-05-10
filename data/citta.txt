@@ -1,0 +1,100 @@
+Napoli,Campania,NA,960000
+Palermo,Sicilia,PA,630000
+Genova,Liguria,GE,580000
+Bari,Puglia,BA,320000
+Messina,Sicilia,ME,220000
+Trieste,Friuli-Venezia Giulia,TS,200000
+Taranto,Puglia,TA,190000
+Reggio Calabria,Calabria,RC,170000
+Cagliari,Sardegna,CA,150000
+Rimini,Emilia-Romagna,RN,150000
+Livorno,Toscana,LI,150000
+Ancona,Marche,AN,100000
+La Spezia,Liguria,SP,930000
+Pescara,Abruzzo,PE,120000
+Venezia,Veneto,VE,250000
+Siracusa,Sicilia,SR,120000
+Brindisi,Puglia,BR,85000
+Civitavecchia,Lazio,RM,52000
+Pozzuoli,Campania,NA,80000
+Chioggia,Veneto,VE,49000
+Savona,Liguria,SV,60000
+Sanremo,Liguria,IM,54000
+Trapani,Sicilia,TP,67000
+Marsala,Sicilia,TP,82000
+Mazara del Vallo,Sicilia,TP,51000
+Gela,Sicilia,CL,72000
+Crotone,Calabria,KR,60000
+Viareggio,Toscana,LU,61000
+Massa,Toscana,MS,68000
+Carrara,Toscana,MS,61000
+Grosseto,Toscana,GR,81000
+Fiumicino,Lazio,RM,80000
+Anzio,Lazio,RM,57000
+Gaeta,Lazio,LT,20000
+Formia,Lazio,LT,37000
+Terracina,Lazio,LT,45000
+Salerno,Campania,SA,130000
+Castellammare di Stabia,Campania,NA,65000
+Sorrento,Campania,NA,16000
+Amalfi,Campania,SA,5000
+Ischia,Campania,NA,20000
+Capri,Campania,NA,7000
+Procida,Campania,NA,10000
+Torre del Greco,Campania,NA,83000
+Manfredonia,Puglia,FG,56000
+Barletta,Puglia,BT,94000
+Trani,Puglia,BT,55000
+Bisceglie,Puglia,BT,54000
+Molfetta,Puglia,BA,59000
+Monopoli,Puglia,BA,48000
+Otranto,Puglia,LE,5000
+Gallipoli,Puglia,LE,20000
+Nardò,Puglia,LE,31000
+Catanzaro,Calabria,CZ,89000
+Lamezia Terme,Calabria,CZ,70000
+Gioia Tauro,Calabria,RC,19000
+Palmi,Calabria,RC,18000
+Paola,Calabria,CS,15000
+Scalea,Calabria,CS,11000
+Soverato,Calabria,CZ,9000
+Milazzo,Sicilia,ME,30000
+Lipari,Sicilia,ME,12000
+Taormina,Sicilia,ME,11000
+Licata,Sicilia,AG,36000
+Sciacca,Sicilia,AG,40000
+Porto Empedocle,Sicilia,AG,16000
+Augusta,Sicilia,SR,36000
+Avola,Sicilia,SR,31000
+Pozzallo,Sicilia,RG,19000
+Olbia,Sardegna,SS,60000
+Alghero,Sardegna,SS,43000
+Porto Torres,Sardegna,SS,22000
+Oristano,Sardegna,OR,31000
+Carbonia,Sardegna,SU,26000
+Iglesias,Sardegna,SU,25000
+Arzachena,Sardegna,SS,13000
+La Maddalena,Sardegna,SS,11000
+Tortolì,Sardegna,NU,11000
+Carloforte,Sardegna,SU,6000
+Sestri Levante,Liguria,GE,18000
+Rapallo,Liguria,GE,29000
+Chiavari,Liguria,GE,27000
+Imperia,Liguria,IM,42000
+Ventimiglia,Liguria,IM,24000
+Alassio,Liguria,SV,10000
+Albenga,Liguria,SV,24000
+Lerici,Liguria,SP,10000
+Portovenere,Liguria,SP,3000
+Camogli,Liguria,GE,5000
+Fano,Marche,PU,60000
+Pesaro,Marche,PU,95000
+Senigallia,Marche,AN,44000
+Civitanova Marche,Marche,MC,42000
+San Benedetto del Tronto,Marche,AP,47000
+Giulianova,Abruzzo,TE,23000
+Ortona,Abruzzo,CH,22000
+Vasto,Abruzzo,CH,41000
+Termoli,Molise,CB,32000
+Cervia,Emilia-Romagna,RA,28000
+Cesenatico,Emilia-Romagna,FC,25000
