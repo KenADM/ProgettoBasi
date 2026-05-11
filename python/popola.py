@@ -6,8 +6,8 @@ from datetime import datetime, timedelta
 NUM_COMPAGNIA = 20
 NUM_IMBARCAZIONE = 100
 NUM_CITTA = 100
-NUM_COLLEGAMENTO = 5000
-NUM_PROPRIETA = 7000
+NUM_COLLEGAMENTO = 500
+NUM_PROPRIETA = 700
 
 # DEFINIZIONE PERCORSI INTELLIGENTE
 IN_DOCKER = os.path.exists('/data')
@@ -156,7 +156,7 @@ def genera_tutto():
         suffisso = f" Bis" if giri_di_lista > 0 else ""
         
         # Accumuliamo la tupla senza punteggiatura finale (lasciamo il nome come commento SQL a lato)
-        riga_valori = f"('{codice}', {anno}, {peso}, '{tipo}') -- Nome: {nome_nave}{suffisso}"
+        riga_valori = f"('{codice}', {anno}, {peso}, '{tipo}')"
         valori_imbarcazione.append(riga_valori)
         
         # Salviamo in memoria per i cicli successivi (PROPRIETA)

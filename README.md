@@ -7,3 +7,5 @@ Link Overleaf
 cose da sistemare
 - sono i trigger quelli che mantengono consistenti i dati derivati?
 - controllo che i collegamenti utilizzino combinazione barca+compagnia valida
+- sistemare lo schema tc proprietà è entita con chiave primaria: compagnia, barca e data
+- considerare la possibilità di tornare alla versione di insert into in righe separate, in modo da non bloccare l'inserimento di tutte le righe in caso di errore
