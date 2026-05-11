@@ -3,7 +3,13 @@ import os
 from datetime import datetime, timedelta
 
 # Quantità richieste dalla Tavola dei Volumi
-NUM_COLLEGAMENTI = 5000
+NUM_COMPAGNIA = 20
+NUM_IMBARCAZIONE = 100
+NUM_CITTA = 100
+NUM_COLLEGAMENTO = 5000
+NUM_PROPRIETA = 7000
+
+
 
 # DEFINIZIONE PERCORSI INTELLIGENTE
 # Se gira dentro Docker userà i percorsi assoluti dei volumi mappati, 
@@ -19,7 +25,7 @@ PATH_OUTPUT = '/output/02_dati.sql' if IN_DOCKER else os.path.join(os.path.dirna
 def genera_codice_registrazione():
     return f"NAV-{random.randint(10000, 99999)}"
 
-def carica_citta(nome_file_path):
+def carica_citta_da_file(nome_file_path):
     citta_list = []
     try:
         with open(nome_file_path, 'r', encoding='utf-8') as f:
@@ -34,7 +40,7 @@ def carica_citta(nome_file_path):
                     })
         return citta_list
     except FileNotFoundError:
-        print(f"⚠️ File {nome_file_path} non trovato.")
+        print(f"File {nome_file_path} non trovato.")
         return [{'nome': 'Napoli', 'regione': 'Campania', 'provincia': 'NA', 'abitanti': 960000}]
 
 def carica_compagnie_da_file(nome_file_path):
@@ -51,7 +57,7 @@ def carica_compagnie_da_file(nome_file_path):
                     })
         return compagnie
     except FileNotFoundError:
-        print(f"⚠️ File {nome_file_path} non trovato.")
+        print(f"File {nome_file_path} non trovato.")
         return []
 
 def carica_imbarcazioni_da_file(nome_file_path):
@@ -69,7 +75,7 @@ def carica_imbarcazioni_da_file(nome_file_path):
                     })
         return imbarcazioni
     except FileNotFoundError:
-        print(f"⚠️ File {nome_file_path} non trovato.")
+        print(f"File {nome_file_path} non trovato.")
         return []
 
 def genera_tutto():
@@ -77,7 +83,7 @@ def genera_tutto():
     
     # Caricamento usando i percorsi intelligenti
     lista_compagnie_txt = carica_compagnie_da_file(PATH_COMPAGNIE)
-    lista_citta = carica_citta(PATH_CITTA)
+    lista_citta = carica_citta_da_file(PATH_CITTA)
     lista_imbarcazioni_txt = carica_imbarcazioni_da_file(PATH_BARCHE)
     
     if not lista_compagnie_txt:
@@ -139,7 +145,7 @@ def genera_tutto():
 
     # 5. COLLEGAMENTO (5000 record)
     sql_lines.append("-- POPOLAMENTO COLLEGAMENTO")
-    for num in range(1, NUM_COLLEGAMENTI + 1):
+    for num in range(1, NUM_COLLEGAMENTO + 1):
         c_partenza = random.choice(nomi_citta_generati)
         c_arrivo = random.choice(nomi_citta_generati)
         while c_arrivo == c_partenza:
@@ -157,7 +163,7 @@ def genera_tutto():
     with open(PATH_OUTPUT, 'w', encoding='utf-8') as f:
         f.write("\n".join(sql_lines))
         
-    print(f"⚓ Generazione completata con successo in {PATH_OUTPUT}!")
+    print(f"Generazione completata con successo in {PATH_OUTPUT}!")
 
 if __name__ == "__main__":
     genera_tutto()
