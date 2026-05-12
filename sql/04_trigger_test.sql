@@ -18,7 +18,11 @@ INSERT INTO PROPRIETA (NomeComp, CodiceRegistrazione, DataInizio) VALUES
 INSERT INTO COLLEGAMENTO (Num, Codice, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES
 (1, '13', 'A', '1900-01-01 16:30:00', 'B', '1900-01-01 21:45:00', 'CompagniaProva', 'NAV-1');
 
+SELECT * FROM COLLEGAMENTI WHERE Num=1; 
+
 -- TEST NEGATIVO: Arrivo (15:00) è MINORE della Partenza (16:30)
 -- Risultato atteso: ERRORE ROSSO! Il trigger deve scattare e bloccare tutto.
 INSERT INTO COLLEGAMENTO (Num, Codice, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES
 (2, '14', 'A', '1900-01-01 16:30:00', 'B', '1900-01-01 15:00:00', 'CompagniaProva', 'NAV-1');
+
+SELECT * FROM COLLEGAMENTI WHERE Num=2;

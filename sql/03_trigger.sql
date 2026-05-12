@@ -25,6 +25,29 @@ EXECUTE FUNCTION controlla_orario_collegamento();
 -- collegamenti deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO
 
 -- impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
+CREATE OR REPLACE FUNCTION controlla_data_acquisto_barca()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    -- Cerchiamo SE ESISTE GIÀ una riga nel database che va in conflitto con NEW
+    IF EXISTS (
+        SELECT 1 FROM Proprieta P
+        WHERE P.CodiceRegistrazione = NEW.CodiceRegistrazione -- Stessa barca
+        AND P.DataInizio = NEW.DataInizio                     -- Stesso giorno
+        AND P.NomeComp != NEW.NomeComp                        -- MA compagnia diversa!
+    ) THEN
+        -- Se trova un conflitto, blocca tutto
+        RAISE EXCEPTION 'Errore: La barca % è già stata acquistata da un''altra compagnia in data %.', NEW.CodiceRegistrazione, NEW.DataInizio;
+    END IF;
+
+    -- Se non ci sono conflitti, diamo il via libera
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER check_data_acquisto_barca
+BEFORE INSERT OR UPDATE ON Proprieta
+FOR EACH ROW
+EXECUTE FUNCTION controlla_data_acquisto_barca();
 
 -- stessa barca utilizzata in tratte contemporanee
 
