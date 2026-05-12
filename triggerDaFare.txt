@@ -5,3 +5,4 @@
 - impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
 - stessa barca utilizzata in tratte contemporanee
 - trigger relativi alle chiavi esterne
+

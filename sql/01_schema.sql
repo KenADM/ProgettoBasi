@@ -21,7 +21,7 @@ CREATE TABLE CITTA (
 );
 
 CREATE TABLE COLLEGAMENTO (
-    Num INT PRIMARY KEY,
+    Num INT NOT NULL,
     Codice VARCHAR(10) NOT NULL,
     NomePartenza VARCHAR(50),
     OraPartenza TIME,
@@ -29,10 +29,12 @@ CREATE TABLE COLLEGAMENTO (
     OraArrivo TIME,
     NomeComp VARCHAR(50),
     CodiceRegistrazione CHAR(10),
+    PRIMARY KEY (Num, Codice, NomePartenza, NomeArrivo, NomeComp, CodiceRegistrazione),
     FOREIGN KEY (NomePartenza) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeArrivo) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
+
 );
 
 CREATE TABLE PROPRIETA (
@@ -43,4 +45,5 @@ CREATE TABLE PROPRIETA (
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON DELETE CASCADE,
     FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
 );
+
 
