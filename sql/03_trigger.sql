@@ -51,5 +51,29 @@ FOR EACH ROW
 EXECUTE FUNCTION controlla_data_acquisto_barca();
 
 -- stessa barca utilizzata in tratte contemporanee
+CREATE OR REPLACE FUNCTION controlla_barche_contemporanee()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    -- !!! DA FINIRE
+    IF EXISTS (
+        SELECT * FROM Collegamento C
+        WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione -- Stessa barca
+        AND C.DataInizio = NEW.DataInizio                     -- Stesso giorno
+        AND C.NomeComp != NEW.NomeComp                        -- MA compagnia diversa!
+    ) THEN
+        -- Se trova un conflitto, blocca tutto
+        RAISE EXCEPTION 'Errore: La barca % è già stata acquistata da un''altra compagnia in data %.', NEW.CodiceRegistrazione, NEW.DataInizio;
+    END IF;
+
+    -- Se non ci sono conflitti, diamo il via libera
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER check_barche_contemporanee
+BEFORE INSERT OR UPDATE ON Collegamento
+FOR EACH ROW
+EXECUTE FUNCTION controlla_barche_contemporanee();
+
 
 -- trigger relativi alle chiavi esterne

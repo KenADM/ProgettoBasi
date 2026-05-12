@@ -1,3 +1,4 @@
+/*
 --1.	Coppie di imbarcazioni appartenute a esattamente le stesse compagnie
 SELECT P1.CodiceRegistrazione, P2.CodiceRegistrazione
 FROM PROPRIETA P1, PROPRIETA P2
@@ -56,3 +57,4 @@ JOIN CITTA Ci ON Co.NomeArrivo = Ci.Nome
 WHERE I.Tipo = 'A' AND Ci.Regione = 'Lombardia'
 GROUP BY NomeComp
 HAVING COUNT(*) <= 2;
+*/
