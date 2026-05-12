@@ -39,7 +39,7 @@ CREATE TABLE PROPRIETA (
     NomeComp VARCHAR(50),
     CodiceRegistrazione CHAR(10),
     DataInizio DATE,
-    PRIMARY KEY (NomeComp, CodiceRegistrazione),
+    PRIMARY KEY (NomeComp, CodiceRegistrazione, DataInizio),
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON DELETE CASCADE,
     FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
 );
