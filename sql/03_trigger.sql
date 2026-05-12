@@ -22,15 +22,16 @@ EXECUTE FUNCTION controlla_orario_collegamento();
 
 -- ridondanza NumCittaServite
 
--- collegamenti deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO
+-- 2 Ccollegamenti deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO
 
--- impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
+
+-- 3 impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
 CREATE OR REPLACE FUNCTION controlla_data_acquisto_barca()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN
     -- Cerchiamo SE ESISTE GIÀ una riga nel database che va in conflitto con NEW
     IF EXISTS (
-        SELECT 1 FROM Proprieta P
+        SELECT * FROM Proprieta P
         WHERE P.CodiceRegistrazione = NEW.CodiceRegistrazione -- Stessa barca
         AND P.DataInizio = NEW.DataInizio                     -- Stesso giorno
         AND P.NomeComp != NEW.NomeComp                        -- MA compagnia diversa!

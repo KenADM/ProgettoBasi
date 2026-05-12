@@ -9,3 +9,6 @@ cose da sistemare
 - i collegamenti utiliizzino barche che appartie 
 - considerare la possibilità di tornare alla versione di insert into in righe separate, in modo da non bloccare l'inserimento di tutte le righe in caso di errore
 - togliere la data da collegamento
+- spiegare i vari tipi di barche/cambiare il tipo di barca
+trigger
+- per cambio proprietà di barca/eliminazione barca, sarà possibile SOLO se non è utilizzata da alcun collegamento
