@@ -9,7 +9,7 @@ CREATE TABLE IMBARCAZIONE (
     CodiceRegistrazione CHAR(10) PRIMARY KEY,
     AnnoCostruzione INT CHECK (AnnoCostruzione > 1900),
     Peso INT,
-    Tipo CHAR(1) 
+    Tipo VARCHAR(50)
 );
 
 CREATE TABLE CITTA (
@@ -49,6 +49,60 @@ CREATE TABLE PROPRIETA (
 
 --TRIGGER--
 
+-- ridondanza NumCompagnieColleganti
+CREATE OR REPLACE FUNCTION aggiorno_NumCompagnieColleganti()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    -- Aggiorniamo le Città coinvolte (sia quella di partenza che quella di arrivo)
+    UPDATE Citta
+    SET NumCompagnieColleganti = (
+        -- Conta le compagnie UNICHE (senza duplicati)
+        SELECT COUNT(DISTINCT NomeComp)
+        FROM COLLEGAMENTO
+        -- ...che partono o arrivano in QUESTA specifica città che stiamo aggiornando
+        WHERE NomePartenza = Citta.Nome OR NomeArrivo = Citta.Nome
+    )
+    -- Applica questo aggiornamento solo alle due città toccate dal nuovo inserimento
+    WHERE Nome IN (NEW.NomePartenza, NEW.NomeArrivo);
+
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER aggiorno_NumCompagnieColleganti
+AFTER INSERT OR UPDATE ON Collegamento
+FOR EACH ROW
+EXECUTE FUNCTION aggiorno_NumCompagnieColleganti();
+
+
+-- ridondanza NumCittaServite
+CREATE OR REPLACE FUNCTION aggiorno_NumCittaServite()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    -- Aggiorniamo il numero di città servite per la compagnia coinvolta
+    UPDATE COMPAGNIA
+    SET NumCittaServite = (
+        SELECT COUNT(*) AS Totale_Citta
+        FROM (
+            SELECT NomePartenza AS NomePorto 
+            FROM COLLEGAMENTO
+            WHERE NomeComp = NEW.NomeComp
+            UNION
+            SELECT NomeArrivo AS NomePorto FROM COLLEGAMENTO
+            WHERE NomeComp = NEW.NomeComp
+        ) AS ListaCitta
+    )
+    WHERE Nome = NEW.NomeComp;
+
+    RETURN NEW;
+END;
+$$ ;
+
+CREATE TRIGGER aggiorno_NumCittaServite
+AFTER INSERT OR UPDATE ON Collegamento
+FOR EACH ROW
+EXECUTE FUNCTION aggiorno_NumCittaServite();
+
 -- 1 orario dei collegamenti, l'arrivo deve essere > della partenza
 CREATE OR REPLACE FUNCTION controlla_orario_collegamento()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
@@ -69,12 +123,38 @@ BEFORE INSERT OR UPDATE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION controlla_orario_collegamento();
 
--- ridondanza NumCompagnieColleganti
 
--- ridondanza NumCittaServite
+-- 2 COLLEGAMENTO deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO attualmente
+CREATE OR REPLACE FUNCTION controlla_validazione_barca_collegamento()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DECLARE
+    ValidProprietario RECORD;
+BEGIN
+    SELECT * INTO ValidProprietario 
+    FROM Proprieta P
+    WHERE NEW.CodiceRegistrazione = P.CodiceRegistrazione -- Stessa barca
+    ORDER BY P.DataInizio DESC
+    LIMIT 1;
 
--- 2 COLLEGAMENTO deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO
+    -- controllo che la barca abbia un proprietario
+    IF ValidProprietario.NomeComp IS NULL THEN
+        RAISE EXCEPTION 'Errore: La barca % non risulta registrata a nessuna compagnia.', NEW.CodiceRegistrazione;
+    END IF;
 
+    -- controllo che il collegamento sia offerto dal proprietario della barca
+    IF ValidProprietario.NomeComp != NEW.NomeComp THEN
+        RAISE EXCEPTION 'Errore: La barca % non appartiene alla compagnia %.', NEW.CodiceRegistrazione, NEW.NomeComp;
+    END IF;
+
+    -- Se non ci sono conflitti, diamo il via libera
+    RETURN NEW;
+END;
+$$ ;
+
+CREATE TRIGGER check_validazione_barca_collegamento
+BEFORE INSERT OR UPDATE ON Collegamento
+FOR EACH ROW
+EXECUTE FUNCTION controlla_validazione_barca_collegamento();
 
 -- 3 impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
 CREATE OR REPLACE FUNCTION controlla_data_acquisto_barca()
@@ -132,5 +212,3 @@ BEFORE INSERT OR UPDATE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION controlla_barche_contemporanee();
 
-
--- trigger relativi alle chiavi esterne

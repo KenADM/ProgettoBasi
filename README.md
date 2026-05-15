@@ -5,13 +5,17 @@ Link Overleaf
 <br> Link Analisi Ridondanze: https://www.notion.so/Analisi-delle-Ridondanze-2cdbff0061ff8003a7dfc99d943c40d5?source=copy_link
 
 cose da sistemare
-- sono i trigger quelli che mantengono consistenti i dati derivati
-- i collegamenti utiliizzino barche che appartie 
-- considerare la possibilità di tornare alla versione di insert into in righe separate, in modo da non bloccare l'inserimento di tutte le righe in caso di errore
-- togliere la data da collegamento
+- togliere la data da collegamento (nella generazione di dati)
 - spiegare i vari tipi di barche/cambiare il tipo di barca
 trigger
 - per cambio proprietà di barca/eliminazione barca, sarà possibile SOLO se non è utilizzata da alcun collegamento
+- impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento !!DA AGGIUNGERE ALLA RELAZIONE
+- Sistemare il triggerTest di NumCompagnieColleganti
+- nei test, sistemare la stampa
 
-cose per la relazione
-- barca appartiene ad una compagnia alla volta
+trigger da ficcare:
+- gestione date imbarcazione vs le altre date
+
+cose per la relazione:
+- il perchè delle scelte dei trigger
+- cambiare la descrizione del calcolo di complessità, per renderlo coerente al calcolo effettuato dai trigger
