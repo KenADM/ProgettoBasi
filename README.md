@@ -14,4 +14,4 @@ trigger
 - per cambio proprietà di barca/eliminazione barca, sarà possibile SOLO se non è utilizzata da alcun collegamento
 
 cose per la relazione
-- barca appartiene ad una compagnia alla voglia
+- barca appartiene ad una compagnia alla volta
