@@ -12,3 +12,6 @@ cose da sistemare
 - spiegare i vari tipi di barche/cambiare il tipo di barca
 trigger
 - per cambio proprietà di barca/eliminazione barca, sarà possibile SOLO se non è utilizzata da alcun collegamento
+
+cose per la relazione
+- barca appartiene ad una compagnia alla voglia
