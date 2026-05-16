@@ -7,8 +7,8 @@ CREATE TABLE COMPAGNIA (
 
 CREATE TABLE IMBARCAZIONE (
     CodiceRegistrazione CHAR(10) PRIMARY KEY,
-    AnnoCostruzione INT CHECK (AnnoCostruzione > 1900),
-    Peso INT,
+    AnnoCostruzione INT CHECK (AnnoCostruzione >= 0 AND AnnoCostruzione <= EXTRACT(YEAR FROM CURRENT_DATE)),
+    Peso INT CHECK (Peso >= 0),
     Tipo VARCHAR(50)
 );
 
@@ -21,14 +21,14 @@ CREATE TABLE CITTA (
 );
 
 CREATE TABLE COLLEGAMENTO (
-    Num INT NOT NULL,
+    Num INT NOT NULL, --numero dell'entita
     Codice VARCHAR(10) NOT NULL,
-    NomePartenza VARCHAR(50),
-    OraPartenza TIME,
-    NomeArrivo VARCHAR(50),
-    OraArrivo TIME,
-    NomeComp VARCHAR(50),
-    CodiceRegistrazione CHAR(10),
+    NomePartenza VARCHAR(50), --citta
+    OraPartenza TIME, --relazione con citta
+    NomeArrivo VARCHAR(50), --citta
+    OraArrivo TIME, -- relazione con citta
+    NomeComp VARCHAR(50), --compagna
+    CodiceRegistrazione CHAR(10), --barca
     PRIMARY KEY (Num, Codice, NomePartenza, NomeArrivo, CodiceRegistrazione),
     FOREIGN KEY (NomePartenza) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeArrivo) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
@@ -42,7 +42,7 @@ CREATE TABLE PROPRIETA (
     CodiceRegistrazione CHAR(10),
     DataInizio DATE,
     PRIMARY KEY (NomeComp, CodiceRegistrazione, DataInizio),
-    FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON DELETE CASCADE,
+    FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
 );
 
@@ -125,11 +125,13 @@ EXECUTE FUNCTION controlla_orario_collegamento();
 
 
 -- 2 COLLEGAMENTO deve usare una barca che appartiene alla compagnia che offre il COLLEGAMENTO attualmente
+--  CONTROLLO anche se la compagnia è ancora nel DB
 CREATE OR REPLACE FUNCTION controlla_validazione_barca_collegamento()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 DECLARE
     ValidProprietario RECORD;
 BEGIN
+
     SELECT * INTO ValidProprietario 
     FROM Proprieta P
     WHERE NEW.CodiceRegistrazione = P.CodiceRegistrazione -- Stessa barca
@@ -157,6 +159,7 @@ FOR EACH ROW
 EXECUTE FUNCTION controlla_validazione_barca_collegamento();
 
 -- 3 impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento
+--   impedire che la data di acquisto di una barca sia successiva alla data di produzione di produzione
 CREATE OR REPLACE FUNCTION controlla_data_acquisto_barca()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN
@@ -171,6 +174,15 @@ BEGIN
         RAISE EXCEPTION 'Errore: La barca % è già stata acquistata da un''altra compagnia in data %.', NEW.CodiceRegistrazione, NEW.DataInizio;
     END IF;
 
+    -- Controlliamo che la data di acquisto non sia precedente all'anno di produzione
+    IF EXISTS (
+        SELECT * FROM IMBARCAZIONE I
+        WHERE I.CodiceRegistrazione = NEW.CodiceRegistrazione
+        AND NEW.DataInizio < make_date(I.AnnoCostruzione, 1, 1)
+    ) THEN
+        RAISE EXCEPTION 'Errore: La data di acquisto della barca è precedente alla data di produzione ';
+    END IF;
+     
     -- Se non ci sono conflitti, diamo il via libera
     RETURN NEW;
 END;
@@ -211,4 +223,3 @@ CREATE TRIGGER check_barche_contemporanee
 BEFORE INSERT OR UPDATE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION controlla_barche_contemporanee();
-

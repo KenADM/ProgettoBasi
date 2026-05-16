@@ -78,8 +78,11 @@ RETURNS BOOLEAN AS $$
 DECLARE
     test_superato BOOLEAN := TRUE;
     compagnie_citta_A_step1 INT; 
+    compagnie_citta_B_step1 INT; 
     compagnie_citta_B_step2 INT; 
+    compagnie_citta_C_step2 INT; 
     compagnie_citta_A_step3 INT; 
+    compagnie_citta_C_step3 INT; 
 BEGIN
 
     -- 1. SETUP DEI DATI
@@ -98,12 +101,15 @@ BEGIN
     -- ==========================================
     INSERT INTO COLLEGAMENTO VALUES (1, '15', 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-1');
 
-    -- Verifichiamo la Città A
+    -- Verifichiamo la Città A e B al step 1
     SELECT NumCompagnieColleganti INTO compagnie_citta_A_step1 
     FROM CITTA WHERE Nome = 'A';
+    SELECT NumCompagnieColleganti INTO compagnie_citta_B_step1 
+    FROM CITTA WHERE Nome = 'B';
 
     RAISE NOTICE '--- FASE 1: Inserita Compagnia 1 su A-B ---';
     RAISE NOTICE 'Compagnie in Città A -> Attese: 1 | Trovate: %', compagnie_citta_A_step1;
+    RAISE NOTICE 'Compagnie in Città B -> Attese: 1 | Trovate: %', compagnie_citta_B_step1;
     IF compagnie_citta_A_step1 != 1 THEN test_superato := FALSE; END IF;
 
 
@@ -112,12 +118,15 @@ BEGIN
     -- ==========================================
     INSERT INTO COLLEGAMENTO VALUES (2, '16', 'B', '17:00:00', 'C', '22:00:00', 'CompagniaProva2', 'NAV-2');
 
-    -- Verifichiamo la Città B (dovrebbe avere sia Compagnia 1 che Compagnia 2)
+    -- Verifichiamo la Città B e C allo step 2
     SELECT NumCompagnieColleganti INTO compagnie_citta_B_step2 
     FROM CITTA WHERE Nome = 'B';
+    SELECT NumCompagnieColleganti INTO compagnie_citta_C_step2 
+    FROM CITTA WHERE Nome = 'C';
 
     RAISE NOTICE '--- FASE 2: Inserita Compagnia 2 su B-C ---';
     RAISE NOTICE 'Compagnie in Città B -> Attese: 2 | Trovate: %', compagnie_citta_B_step2;
+    RAISE NOTICE 'Compagnie in Città C -> Attese: 1 | Trovate: %', compagnie_citta_C_step2;
     IF compagnie_citta_B_step2 != 2 THEN test_superato := FALSE; END IF;
 
 
@@ -126,12 +135,15 @@ BEGIN
     -- ==========================================
     INSERT INTO COLLEGAMENTO VALUES (3, '17', 'A', '12:00:00', 'C', '15:00:00', 'CompagniaProva1', 'NAV-1');
 
-    -- Verifichiamo la Città A (dovrebbe restare 1, il trigger non deve contare due volte la CompagniaProva1)
+    -- Verifichiamo la Città A e C allo step 3 (A deve rimanere 1, C deve rimanere 2)
     SELECT NumCompagnieColleganti INTO compagnie_citta_A_step3 
     FROM CITTA WHERE Nome = 'A';
+    SELECT NumCompagnieColleganti INTO compagnie_citta_C_step3 
+    FROM CITTA WHERE Nome = 'C';
 
     RAISE NOTICE '--- FASE 3: Compagnia 1 aggiunge un nuovo viaggio per A-C ---';
     RAISE NOTICE 'Compagnie in Città A -> Attese: 1 (Test DISTINCT) | Trovate: %', compagnie_citta_A_step3;
+    RAISE NOTICE 'Compagnie in Città C -> Attese: 2 (Test DISTINCT) | Trovate: %', compagnie_citta_C_step3;
     IF compagnie_citta_A_step3 != 1 THEN test_superato := FALSE; END IF;
 
 
@@ -263,7 +275,7 @@ BEGIN
 
     -- SETUP
     INSERT INTO COMPAGNIA VALUES ('CompagniaProva2', 'Mario Rossi', 999.00, 0), ('CompagniaProva3', 'Mario Rossi', 999.00, 0);
-    INSERT INTO IMBARCAZIONE VALUES ('NAV-3', 2001, 24000, 'T');
+    INSERT INTO IMBARCAZIONE VALUES ('NAV-3', 2003, 24000, 'T');
 
     -- TEST POSITIVO: Prima assegnazione
     BEGIN
@@ -277,6 +289,16 @@ BEGIN
     -- TEST NEGATIVO: Seconda assegnazione (Se vietata, deve dare errore)
     BEGIN
         INSERT INTO PROPRIETA VALUES ('CompagniaProva3', 'NAV-3', '2004-03-23');
+        
+        RAISE NOTICE 'Trigger 3 - Test Negativo FALLITO (Il trigger non ha bloccato)';
+        test_superato := FALSE;
+    EXCEPTION WHEN OTHERS THEN
+        RAISE NOTICE 'Trigger 3 - Test Negativo SUPERATO (Errore intercettato: %)', SQLERRM;
+    END;
+
+    -- TEST NEGATIVO: Terza assegnazione (Se vietata, deve dare errore)
+    BEGIN
+        INSERT INTO PROPRIETA VALUES ('CompagniaProva3', 'NAV-3', '2002-03-23');
         
         RAISE NOTICE 'Trigger 3 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;

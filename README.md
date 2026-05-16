@@ -11,9 +11,8 @@ trigger
 - impedire che due compagnie diverse abbiano acquistato la stessa barca nello stesso momento !!DA AGGIUNGERE ALLA RELAZIONE
 - Sistemare il triggerTest di NumCompagnieColleganti
 - nei test, sistemare la stampa
+- Sistema generazione dati x seguire lo schema e i trigger definiti
 
-trigger da ficcare:
-- gestione date imbarcazione vs le altre date
 
 cose per la relazione:
 - il perchè delle scelte dei trigger
