@@ -18,7 +18,7 @@ BEGIN
     -- ==========================================
     -- FASE 1: PRIMO INSERIMENTO (Tocca città A e B)
     -- ==========================================
-    INSERT INTO COLLEGAMENTO VALUES (1, '15', 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-1');
+    INSERT INTO COLLEGAMENTO VALUES (1, 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-1');
 
     -- Leggo il valore aggiornato dal Trigger
     SELECT NumCittaServite INTO citta_contate_step1 
@@ -37,7 +37,7 @@ BEGIN
     -- ==========================================
     -- FASE 2: SECONDO INSERIMENTO (Aggiunge città C)
     -- ==========================================
-    INSERT INTO COLLEGAMENTO VALUES (2, '16', 'B', '17:00:00', 'C', '22:00:00', 'CompagniaProva1', 'NAV-2');
+    INSERT INTO COLLEGAMENTO VALUES (2, 'B', '17:00:00', 'C', '22:00:00', 'CompagniaProva1', 'NAV-2');
 
     -- Leggo di nuovo il valore aggiornato dal Trigger
     SELECT NumCittaServite INTO citta_contate_step2 
@@ -99,7 +99,7 @@ BEGIN
     -- ==========================================
     -- FASE 1: La Compagnia 1 collega A e B
     -- ==========================================
-    INSERT INTO COLLEGAMENTO VALUES (1, '15', 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-1');
+    INSERT INTO COLLEGAMENTO VALUES (1, 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-1');
 
     -- Verifichiamo la Città A e B al step 1
     SELECT NumCompagnieColleganti INTO compagnie_citta_A_step1 
@@ -116,7 +116,7 @@ BEGIN
     -- ==========================================
     -- FASE 2: La Compagnia 2 collega B e C
     -- ==========================================
-    INSERT INTO COLLEGAMENTO VALUES (2, '16', 'B', '17:00:00', 'C', '22:00:00', 'CompagniaProva2', 'NAV-2');
+    INSERT INTO COLLEGAMENTO VALUES (2, 'B', '17:00:00', 'C', '22:00:00', 'CompagniaProva2', 'NAV-2');
 
     -- Verifichiamo la Città B e C allo step 2
     SELECT NumCompagnieColleganti INTO compagnie_citta_B_step2 
@@ -133,7 +133,7 @@ BEGIN
     -- ==========================================
     -- FASE 3: Test duplicati! La Compagnia 1 crea una nuova tratta da A a C
     -- ==========================================
-    INSERT INTO COLLEGAMENTO VALUES (3, '17', 'A', '12:00:00', 'C', '15:00:00', 'CompagniaProva1', 'NAV-1');
+    INSERT INTO COLLEGAMENTO VALUES (3, 'A', '12:00:00', 'C', '15:00:00', 'CompagniaProva1', 'NAV-1');
 
     -- Verifichiamo la Città A e C allo step 3 (A deve rimanere 1, C deve rimanere 2)
     SELECT NumCompagnieColleganti INTO compagnie_citta_A_step3 
@@ -181,8 +181,8 @@ BEGIN
 
     -- TEST POSITIVO: Arrivo > Partenza
     BEGIN
-        INSERT INTO COLLEGAMENTO (Num, Codice, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) 
-        VALUES (1, '13', 'A', '16:30:00', 'B', '21:45:00', 'CompagniaProva1', 'NAV-1');
+        INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) 
+        VALUES (1, 'A', '16:30:00', 'B', '21:45:00', 'CompagniaProva1', 'NAV-1');
         RAISE NOTICE 'Trigger 1 - Test Positivo: OK';
     EXCEPTION WHEN OTHERS THEN
         RAISE NOTICE 'Trigger 1 - Test Positivo FALLITO: %', SQLERRM;
@@ -191,8 +191,8 @@ BEGIN
 
     -- TEST NEGATIVO: Arrivo < Partenza (Deve dare errore)
     BEGIN
-        INSERT INTO COLLEGAMENTO (Num, Codice, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) 
-        VALUES (2, '14', 'A', '16:30:00', 'B', '15:00:00', 'CompagniaProva1', 'NAV-1');
+        INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) 
+        VALUES (2, 'A', '16:30:00', 'B', '15:00:00', 'CompagniaProva1', 'NAV-1');
         
         RAISE NOTICE 'Trigger 1 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
@@ -201,7 +201,7 @@ BEGIN
     END;
 
     -- PULIZIA DATI
-    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND Codice = '13' AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-1';
+    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-1';
     DELETE FROM PROPRIETA WHERE NomeComp = 'CompagniaProva1' AND CodiceRegistrazione = 'NAV-1' AND DataInizio = '2004-03-23';
     DELETE FROM CITTA WHERE Nome IN ('A', 'B');
     DELETE FROM IMBARCAZIONE WHERE CodiceRegistrazione = 'NAV-1';
@@ -228,7 +228,7 @@ BEGIN
 
     -- TEST POSITIVO: Prima assegnazione
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (1, '15', 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (1, 'A', '8:00:00', 'B', '9:00:00', 'CompagniaProva1', 'NAV-3');
         RAISE NOTICE 'Trigger 2 - Test Positivo: OK';
     EXCEPTION WHEN OTHERS THEN
         RAISE NOTICE 'Trigger 2 - Test Positivo FALLITO: %', SQLERRM;
@@ -238,7 +238,7 @@ BEGIN
     -- TEST NEGATIVO: Seconda assegnazione (Se vietata, deve dare errore)
     -- TEST UNO: la barca che voglio assegnare al collegamento non è di proprietà della compagnia che offre il collegamento
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (2, '16', 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva2', 'NAV-3');        
+        INSERT INTO COLLEGAMENTO VALUES (2, 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva2', 'NAV-3');        
         RAISE NOTICE 'Trigger 2 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -247,7 +247,7 @@ BEGIN
     
     -- TEST DUE: la barca che voglio assegnare al collegamento non è di proprieta di nessuno
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (2, '16', 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva2', 'NAV-4');        
+        INSERT INTO COLLEGAMENTO VALUES (2, 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva2', 'NAV-4');        
         RAISE NOTICE 'Trigger 2 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -255,8 +255,8 @@ BEGIN
     END;
 
     -- PULIZIA DATI
-    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND Codice = '15' AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
-    DELETE FROM COLLEGAMENTO WHERE Num = 2 AND Codice = '16' AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
+    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
+    DELETE FROM COLLEGAMENTO WHERE Num = 2 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
     DELETE FROM PROPRIETA WHERE NomeComp = 'CompagniaProva1' AND CodiceRegistrazione = 'NAV-3' AND DataInizio = '2004-03-23';
     DELETE FROM PROPRIETA WHERE NomeComp = 'CompagniaProva2' AND CodiceRegistrazione = 'NAV-3' AND DataInizio = '2004-02-23';
     DELETE FROM IMBARCAZIONE WHERE CodiceRegistrazione = 'NAV-3';
@@ -329,7 +329,7 @@ BEGIN
 
     -- TEST POSITIVO: Prima assegnazione
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (1, '15', 'A', '16:30:00', 'B', '21:45:00', 'CompagniaProva', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (1, 'A', '16:30:00', 'B', '21:45:00', 'CompagniaProva', 'NAV-3');
         RAISE NOTICE 'Trigger 4 - Test Positivo: OK';
     EXCEPTION WHEN OTHERS THEN
         RAISE NOTICE 'Trigger 4 - Test Positivo FALLITO: %', SQLERRM;
@@ -340,7 +340,7 @@ BEGIN
 
     -- TEST UNO: nuovo collegamento inizia mentre la barca è utilizzata
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (2, '16', 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (2, 'A', '17:00:00', 'B', '22:00:00', 'CompagniaProva', 'NAV-3');
         RAISE NOTICE 'Trigger 4 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -348,7 +348,7 @@ BEGIN
     END;
     -- TEST DUE: nuovo collegamento usa la barca, ma in mezzo è utilizzata da un altro collegamento
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (3, '17', 'A', '15:00:00', 'B', '23:00:00', 'CompagniaProva', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (3, 'A', '15:00:00', 'B', '23:00:00', 'CompagniaProva', 'NAV-3');
         RAISE NOTICE 'Trigger 4 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -356,7 +356,7 @@ BEGIN
     END;
     -- TEST TRE: nuovo collegamento usa barca ,ma prima di tornare è utilizzata da un altro collegamento
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (4, '18', 'A', '16:00:00', 'B', '18:00:00', 'CompagniaProva', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (4, 'A', '16:00:00', 'B', '18:00:00', 'CompagniaProva', 'NAV-3');
         RAISE NOTICE 'Trigger 4 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -364,7 +364,7 @@ BEGIN
     END;
     -- TEST QUATTRO: nuovo collegamento inizia e termina mentre la barca è utilizzata
     BEGIN
-        INSERT INTO COLLEGAMENTO VALUES (4, '18', 'A', '17:00:00', 'B', '18:00:00', 'CompagniaProva', 'NAV-3');
+        INSERT INTO COLLEGAMENTO VALUES (4, 'A', '17:00:00', 'B', '18:00:00', 'CompagniaProva', 'NAV-3');
         RAISE NOTICE 'Trigger 4 - Test Negativo FALLITO (Il trigger non ha bloccato)';
         test_superato := FALSE;
     EXCEPTION WHEN OTHERS THEN
@@ -372,7 +372,7 @@ BEGIN
     END;
 
     -- PULIZIA DATI
-    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND Codice = '15' AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
+    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
     DELETE FROM CITTA WHERE Nome IN ('A', 'B');
     DELETE FROM PROPRIETA WHERE NomeComp = 'CompagniaProva' AND CodiceRegistrazione = 'NAV-3' AND DataInizio = '2004-03-23';
     DELETE FROM IMBARCAZIONE WHERE CodiceRegistrazione = 'NAV-3';

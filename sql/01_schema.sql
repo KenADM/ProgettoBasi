@@ -22,14 +22,13 @@ CREATE TABLE CITTA (
 
 CREATE TABLE COLLEGAMENTO (
     Num INT NOT NULL, --numero dell'entita
-    Codice VARCHAR(10) NOT NULL,
     NomePartenza VARCHAR(50), --citta
     OraPartenza TIME, --relazione con citta
     NomeArrivo VARCHAR(50), --citta
     OraArrivo TIME, -- relazione con citta
     NomeComp VARCHAR(50), --compagna
     CodiceRegistrazione CHAR(10), --barca
-    PRIMARY KEY (Num, Codice, NomePartenza, NomeArrivo, CodiceRegistrazione),
+    PRIMARY KEY (Num, NomePartenza, NomeArrivo, CodiceRegistrazione),
     FOREIGN KEY (NomePartenza) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeArrivo) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -197,8 +196,7 @@ BEGIN
         SELECT 1 FROM Collegamento C
         WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione -- Stessa barca
         AND (
-            C.Codice <> NEW.Codice
-            OR C.Num <> NEW.Num
+            C.Num <> NEW.Num
             OR C.NomePartenza <> NEW.NomePartenza
             OR C.NomeArrivo <> NEW.NomeArrivo
             OR C.CodiceRegistrazione <> NEW.CodiceRegistrazione
