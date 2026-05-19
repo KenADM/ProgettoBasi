@@ -75,22 +75,17 @@ FOR EACH ROW
 EXECUTE FUNCTION aggiorno_NumCompagnieColleganti();
 
 
--- ridondanza NumCittaServite
+-- ridondanza NumCittaServite 
 CREATE OR REPLACE FUNCTION aggiorno_NumCittaServite()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN
-    -- Aggiorniamo il numero di città servite per la compagnia coinvolta
+    -- Aggiorniamo il numero di città servite con una singola scansione
     UPDATE COMPAGNIA
     SET NumCittaServite = (
-        SELECT COUNT(*) AS Totale_Citta
-        FROM (
-            SELECT NomePartenza AS NomePorto 
-            FROM COLLEGAMENTO
-            WHERE NomeComp = NEW.NomeComp
-            UNION
-            SELECT NomeArrivo AS NomePorto FROM COLLEGAMENTO
-            WHERE NomeComp = NEW.NomeComp
-        ) AS ListaCitta
+        SELECT COUNT(DISTINCT porto)
+        FROM COLLEGAMENTO,
+             UNNEST(ARRAY[NomePartenza, NomeArrivo]) AS porto
+        WHERE NomeComp = NEW.NomeComp
     )
     WHERE Nome = NEW.NomeComp;
 
