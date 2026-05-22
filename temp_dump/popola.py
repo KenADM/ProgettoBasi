@@ -80,6 +80,11 @@ def carica_imbarcazioni_da_file(nome_file_path):
         print(f"File {nome_file_path} non trovato.")
         return []
 
+def trovaCompagnia(){
+
+
+}
+
 def genera_tutto():
     sql_lines = []
     
@@ -265,10 +270,9 @@ def genera_tutto():
         
         # Scelgo una barca casuale tra quelle generate in PROPRIETA per assegnarla al collegamento
         # La scelgo da proprietà in modo da garantire che la barca sia effettivamente in servizio per una compagnia
-        scelta_barca = random.choice(valori_proprieta_generati)
-        compagnia_servizio = scelta_barca['compagnia']
-        imbarcazione_servizio = scelta_barca['codice']
-        
+        scelta_barca = random.choice(imbarcazioni_generate)
+        compagnia_servizio = trovaCompagnia(scelta_barca,valori_proprieta_generati);
+    
         # Accumuliamo la singola tupla nella lista temporanea
         riga_valori = f"({num}, '{codice_tratta}', '{c_partenza}', '{ora_partenza}', '{c_arrivo}', '{ora_arrivo}', '{compagnia_servizio}', '{imbarcazione_servizio}')"
         valori_collegamento.append(riga_valori)

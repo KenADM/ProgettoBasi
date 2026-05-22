@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 NUM_COMPAGNIA = 20
 NUM_IMBARCAZIONE = 100
 NUM_CITTA = 100
-NUM_COLLEGAMENTO = 500
+NUM_COLLEGAMENTO = 50000
 NUM_PROPRIETA = 700
 
 #NUM_COMPAGNIA = 0
@@ -260,9 +260,7 @@ def genera_tutto():
 
    # 5. COLLEGAMENTO ---------------------------------------
     sql_lines.append(f"-- POPOLAMENTO COLLEGAMENTO ({NUM_COLLEGAMENTO} record)")
-    sql_lines.append("INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES")
     
-    valori_collegamento = [] # Lista temporanea per il bulk insert
     valori_collegamento_generati = [] # Lista di dizionari per le ricerche in memoria
     
     for num in range(1, NUM_COLLEGAMENTO + 1):
@@ -282,14 +280,13 @@ def genera_tutto():
             ora_arrivo = ora2
         
         # Scelgo una barca casuale tra quelle generate in PROPRIETA per assegnarla al collegamento
-        # La scelgo da proprietà in modo da garantire che la barca sia effettivamente in servizio per una compagnia
         scelta_barca = scegli_barca_per_collegamento(imbarcazioni_generate, valori_proprieta_generati)
         compagnia_servizio = scelta_barca['compagnia']
         imbarcazione_servizio = scelta_barca['codice']
         
-        # Accumuliamo la singola tupla nella lista temporanea
-        riga_valori = f"({num}, '{c_partenza}', '{ora_partenza}', '{c_arrivo}', '{ora_arrivo}', '{compagnia_servizio}', '{imbarcazione_servizio}')"
-        valori_collegamento.append(riga_valori)
+        # Creiamo e appendiamo la query INSERT SINGOLA per questa specifica riga
+        query_insert = f"INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES ({num}, '{c_partenza}', '{ora_partenza}', '{c_arrivo}', '{ora_arrivo}', '{compagnia_servizio}', '{imbarcazione_servizio}');"
+        sql_lines.append(query_insert)
 
         # Salviamo in memoria per le ricerche successive
         valori_collegamento_generati.append({
@@ -302,8 +299,6 @@ def genera_tutto():
             'imbarcazione': imbarcazione_servizio
         })
 
-    # Uniamo tutte le tuple con la virgola e chiudiamo con il punto e virgola
-    sql_lines.append(",\n".join(valori_collegamento) + ";")
     sql_lines.append("")
 
     # Scrittura finale usando il percorso intelligente
@@ -311,5 +306,6 @@ def genera_tutto():
         f.write("\n".join(sql_lines))
         
     print(f"Generazione completata con successo in {PATH_OUTPUT}!")
+
 if __name__ == "__main__":
     genera_tutto()
