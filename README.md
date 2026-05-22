@@ -17,3 +17,8 @@ trigger
 cose per la relazione:
 - il perchè delle scelte dei trigger
 - cambiare la descrizione del calcolo di complessità, per renderlo coerente al calcolo effettuato dai trigger
+
+
+generazione dati:
+- inserire memorizzazione collegamenti
+- inserire controllo per validazione scelta barche in base alla disponibilità oraria

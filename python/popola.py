@@ -79,6 +79,22 @@ def carica_imbarcazioni_da_file(nome_file_path):
     except FileNotFoundError:
         print(f"File {nome_file_path} non trovato.")
         return []
+    
+def scegli_barca_per_collegamento(barche, associazioni_proprieta):
+    # Scegli una barca casuale tra quelle generate in PROPRIETA
+    scelta_barca = random.choice(barche)
+    scelta_associazione = None
+    
+    for associazione in associazioni_proprieta:
+        # scelta una barca casuale, trovo la proprietà più recente di quella barca (data più alta)
+        if associazione['codice'] == scelta_barca['codice'] and (scelta_associazione is None or associazione['data'] > scelta_associazione['data']):
+            scelta_associazione = associazione
+
+    if scelta_associazione:
+        return scelta_associazione
+    else:
+        # Se la barca estratta non aveva proprietà, riproviamo con un'altra
+        return scegli_barca_per_collegamento(barche, associazioni_proprieta)
 
 def genera_tutto():
     sql_lines = []
@@ -242,17 +258,21 @@ def genera_tutto():
     sql_lines.append(",\n".join(valori_proprieta) + ";")
     sql_lines.append("")
 
-    # 5. COLLEGAMENTO ---------------------------------------
+   # 5. COLLEGAMENTO ---------------------------------------
     sql_lines.append(f"-- POPOLAMENTO COLLEGAMENTO ({NUM_COLLEGAMENTO} record)")
     sql_lines.append("INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES")
     
     valori_collegamento = [] # Lista temporanea per il bulk insert
+    valori_collegamento_generati = [] # Lista di dizionari per le ricerche in memoria
+    
     for num in range(1, NUM_COLLEGAMENTO + 1):
         c_partenza = random.choice(nomi_citta_generati)
         c_arrivo = random.choice(nomi_citta_generati)
 
         ora1 = datetime.strptime(f"{random.randint(5, 22)}:{random.choice([0, 15, 30, 45])}", "%H:%M")
-        ora2 = datetime.strptime(f"{random.randint(5, 22)}:{random.choice([0, 15, 30, 45])}", "%H:%M")
+        ora2 = ora1
+        while ora2 == ora1:  # Assicuriamoci che le due ore non siano identiche
+            ora2 = datetime.strptime(f"{random.randint(5, 22)}:{random.choice([0, 15, 30, 45])}", "%H:%M")
 
         if ora2 < ora1:
             ora_partenza = ora2
@@ -263,7 +283,7 @@ def genera_tutto():
         
         # Scelgo una barca casuale tra quelle generate in PROPRIETA per assegnarla al collegamento
         # La scelgo da proprietà in modo da garantire che la barca sia effettivamente in servizio per una compagnia
-        scelta_barca = random.choice(valori_proprieta_generati)
+        scelta_barca = scegli_barca_per_collegamento(imbarcazioni_generate, valori_proprieta_generati)
         compagnia_servizio = scelta_barca['compagnia']
         imbarcazione_servizio = scelta_barca['codice']
         
@@ -271,7 +291,18 @@ def genera_tutto():
         riga_valori = f"({num}, '{c_partenza}', '{ora_partenza}', '{c_arrivo}', '{ora_arrivo}', '{compagnia_servizio}', '{imbarcazione_servizio}')"
         valori_collegamento.append(riga_valori)
 
-    # Uniamo tutte le 5.000 tuple con la virgola e chiudiamo con il punto e virgola
+        # Salviamo in memoria per le ricerche successive
+        valori_collegamento_generati.append({
+            'num': num,
+            'partenza': c_partenza,
+            'ora_partenza': ora_partenza, # Oggetto datetime
+            'arrivo': c_arrivo,
+            'ora_arrivo': ora_arrivo,     # Oggetto datetime
+            'compagnia': compagnia_servizio,
+            'imbarcazione': imbarcazione_servizio
+        })
+
+    # Uniamo tutte le tuple con la virgola e chiudiamo con il punto e virgola
     sql_lines.append(",\n".join(valori_collegamento) + ";")
     sql_lines.append("")
 
@@ -280,6 +311,5 @@ def genera_tutto():
         f.write("\n".join(sql_lines))
         
     print(f"Generazione completata con successo in {PATH_OUTPUT}!")
-
 if __name__ == "__main__":
     genera_tutto()
