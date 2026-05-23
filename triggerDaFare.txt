@@ -6,3 +6,8 @@
 - stessa barca utilizzata in tratte contemporanee
 - trigger relativi alle chiavi esterne
 
+
+- aggiungere barche
+- vario durata
+- NUOVO TRIGGER DEL VIAGGIO
+

@@ -1,100 +1,450 @@
-Athara,2003,24000,T
-Bithia,2001,24000,T
-Janas,2002,24000,T
-Sharden,2005,29000,T
-Moby Aki,2005,22000,T
-Moby Wonder,2001,22000,T
-Moby Dada,1981,15000,T
-Moby Tommy,2002,21000,T
-Excelsior,1999,23000,T
-Excellent,1998,23000,T
-Superba,2002,30000,T
-Splendid,1994,20000,T
-Venezia,2004,18000,T
-Florencia,2004,18000,T
-Cartour Delta,2010,12000,T
-Caronte,1974,5000,T
-Telepass,1998,4500,T
-Zancle,2006,5000,T
-SNAV Adriatico,1986,16000,T
-SNAV Toscana,1981,14000,T
-SNAV Lazio,1989,12000,T
-SNAV Sardegna,1989,12000,T
-Isola di Procida,1999,350,A
-Isola di Vulcano,1998,350,A
-Isola di Stromboli,1999,350,A
-Isola di Capri,1998,350,A
-Isola di Ponza,2001,350,A
-Don Francesco,2000,400,K
-Acapulco Jet,1999,380,K
-Schiopparello Jet,2000,380,K
-Giglio Jet,2000,380,K
-Grecale,1992,200,A
-Scirocco,1992,200,A
-Alnilam,1996,150,A
-Ammari,1996,150,A
-Gianni M,2005,450,K
-Platone,1990,250,A
-Vesuvio,1991,250,A
-Eschilo,1993,250,A
-Zeusi,1994,250,A
-Moby Vincent,1974,10000,T
-Moby Niki,1974,9000,T
-Moby Baby,1966,4000,T
-Moby Love,1975,5000,T
-Moby Ale,1969,2000,T
-Moby Zaza,1982,12000,T
-Moby Kiss,1975,8000,T
-Moby Corse,1978,11000,T
-Moby Fantasy,2023,35000,T
-Moby Legacy,2024,35000,T
-Eurocargo Salerno,1998,15000,C
-Eurocargo Istanbul,1998,15000,C
-Eurocargo Malta,1999,16000,C
-Eurocargo Venezia,2000,16000,C
-Eurocargo Trieste,1997,14000,C
-Sardinia Regina,1972,11000,T
-Sardinia Vera,1975,10000,T
-Corsica Marina,1974,9000,T
-Corsica Victoria,1973,11000,T
-Corsica Express Three,1996,400,K
-Pascal Lota,2008,18000,T
-Mega Andrea,1986,20000,T
-Mega Smeralda,1985,20000,T
-Aurelia,1980,11000,T
-Grande Napoli,2002,18000,C
-Grande Sicilia,2003,18000,C
-Grande San Paolo,2003,19000,C
-Grande Amburgo,2001,17000,C
-Grande Nigeria,2001,17000,C
-GNV Polaris,2020,18000,T
-GNV Sealand,2009,16000,T
-GNV Bridge,2021,17000,T
-SNAV Pegasus,1978,11000,T
-SNAV Orion,2005,400,K
-SNAV Shaula,1986,220,A
-SNAV Aries,2005,400,K
-SNAV Auriga,2005,400,K
-SNAV Antares,2005,400,K
-SNAV Altair,2005,400,K
-SNAV Aldebaran,2005,400,K
-SNAV Sirius,2005,400,K
-SNAV Vega,2005,400,K
-Ammari Jet,2003,320,K
-Ercolano Jet,2003,320,K
-Selinunte Jet,2004,320,K
-Prampolini Jet,2004,320,K
-Motonave Cristina,2015,120,M
-Motonave Freccia,2018,90,M
-Motonave Venus,2012,110,M
-Motonave Albatros,2020,130,M
-Pietro Novelli,1979,6000,T
-Antonello da Messina,1988,6500,T
-Filippo Lippi,1990,6500,T
-Isola di Vulcano,2000,350,A
-Isola di Ustica,1990,320,A
-Isola di Stromboli,1990,320,A
-Isola di Capraia,1999,350,A
-Motonave Nautilus,2010,80,M
-Motonave Calypso,2014,95,M
-Motonave Stella,2016,105,M
+Vincenzo Florio,1999,30000,T
+Raffaele Rubattino,2000,30000,T
+Boccaccio,1985,12000,T
+Carducci,1986,12000,T
+Leopardi,1987,12000,T
+Manzoni,1988,12000,T
+Pascoli,1989,12000,T
+Petrarca,1990,12000,T
+Tasso,1991,12000,T
+Verga,1992,12000,T
+D'Annunzio,1993,12000,T
+Pirandello,1994,12000,T
+Svevo,1995,12000,T
+Calvino,1996,12000,T
+Pavese,1997,12000,T
+Sciascia,1998,12000,T
+Deledda,1999,12000,T
+Morante,2000,12000,T
+Moravia,2001,12000,T
+Gadda,2002,12000,T
+GNV Majestic,1993,32000,T
+GNV Fantastic,1996,33000,T
+GNV Victory,1999,34000,T
+GNV Azzurra,1981,30000,T
+GNV Cristal,1989,32000,T
+GNV Atlas,1990,32000,T
+GNV Allegra,1987,31000,T
+GNV Rhapsody,1996,35000,T
+GNV Aretusa,1998,30000,T
+GNV Horizon,2001,28000,T
+GNV Galaxy,2002,28000,T
+GNV Universe,2003,28000,T
+GNV Cosmos,2004,28000,T
+GNV Orbit,2005,28000,T
+GNV Star,2006,28000,T
+GNV Moon,2007,28000,T
+GNV Sun,2008,28000,T
+GNV Planet,2009,28000,T
+GNV Comet,2010,28000,T
+GNV Meteor,2011,28000,T
+GNV Asteroid,2012,28000,T
+GNV Nebula,2013,28000,T
+GNV Nova,2014,28000,T
+GNV Supernova,2015,28000,T
+GNV Eclipse,2016,28000,T
+Moby Stella,1995,15000,T
+Moby Luna,1996,15000,T
+Moby Sole,1997,15000,T
+Moby Mare,1998,15000,T
+Moby Veloce,1999,15000,T
+Moby Blu,2000,15000,T
+Moby Green,2001,15000,T
+Moby Red,2002,15000,T
+Moby Orli,2003,15000,T
+Moby Drea,2004,15000,T
+Moby Otta,2005,15000,T
+Moby Liat,2006,15000,T
+Moby Diki,2007,15000,T
+Moby Gum,2008,15000,T
+Moby Roxy,2009,15000,T
+Moby Star,2010,15000,T
+Moby Sun,2011,15000,T
+Moby Moon,2012,15000,T
+Moby Sky,2013,15000,T
+Moby Sea,2014,15000,T
+Moby Ocean,2015,15000,T
+Moby Wave,2016,15000,T
+Moby Surf,2017,15000,T
+Moby Wind,2018,15000,T
+Moby Breeze,2019,15000,T
+Corsica Express One,1995,4500,T
+Corsica Express Two,1996,4500,T
+Corsica Express Four,1998,4500,T
+Corsica Marina Seconda,1974,12000,T
+Sardinia Vera Terza,1975,12000,T
+Sardinia Regina Seconda,1972,12000,T
+Mega Express,2001,26000,T
+Mega Express Two,2001,26000,T
+Mega Express Three,2001,26000,T
+Mega Express Four,2006,26000,T
+Mega Express Five,2009,26000,T
+Mega Express Six,2010,26000,T
+Sardinia Serena,1980,14000,T
+Corsica Bella,1981,14000,T
+Sardinia Bella,1982,14000,T
+Corsica Serena,1983,14000,T
+Corsica Stella,1984,14000,T
+Sardinia Stella,1985,14000,T
+Corsica Nova,1986,14000,T
+Sardinia Nova,1987,14000,T
+Superfast I,2008,24000,T
+Superfast II,2009,24000,T
+Superfast III,1995,29000,T
+Superfast IV,1995,29000,T
+Superfast V,2001,32000,T
+Superfast VI,2001,32000,T
+Superfast VII,2001,30000,T
+Superfast VIII,2001,30000,T
+Superfast IX,2002,30000,T
+Superfast X,2002,30000,T
+Superfast XI,2002,32000,T
+Superfast XII,2002,32000,T
+Olympic Champion,2000,32000,T
+Hellenic Spirit,2001,32000,T
+Elyros,1998,33000,T
+Kydon,1990,30000,T
+Kriti I,1979,27000,T
+Kriti II,1979,27000,T
+Prevelis,1980,15000,T
+Knossos Palace,2000,37000,T
+Festos Palace,2001,37000,T
+Kydon Palace,2001,37000,T
+Europa Palace,2002,37000,T
+Zeus Palace,2001,32000,T
+Ichnusa,1986,2000,T
+Orosei,1987,2000,T
+Arbatax,1988,2000,T
+Gallura,1989,2000,T
+Barbagia,1990,2000,T
+Campidano,1991,2000,T
+Logudoro,1992,2000,T
+Sulcis,1993,2000,T
+Iglesiente,1994,2000,T
+Nuraghe,1995,2000,T
+Grande Roma,2000,18000,C
+Grande Milano,2001,18000,C
+Grande Torino,2002,18000,C
+Grande Genova,2003,18000,C
+Grande Livorno,2004,18000,C
+Grande Venezia,2005,18000,C
+Grande Trieste,2006,18000,C
+Grande Ancona,2007,18000,C
+Grande Bari,2008,18000,C
+Grande Brindisi,2009,18000,C
+Grande Salerno,2010,18000,C
+Grande Palermo,2011,18000,C
+Grande Catania,2012,18000,C
+Grande Messina,2013,18000,C
+Grande Cagliari,2014,18000,C
+Grande Olbia,2015,18000,C
+Grande Europa,1998,18000,C
+Grande Mediterraneo,1998,18000,C
+Grande Atlantico,1999,18000,C
+Grande Oceano,1999,18000,C
+Grande America,1997,18000,C
+Grande Africa,1997,18000,C
+Grande Asia,1998,18000,C
+Grande Oceania,1999,18000,C
+Eurocargo Roma,2001,16000,C
+Eurocargo Milano,2002,16000,C
+Eurocargo Napoli,2003,16000,C
+Eurocargo Bari,2004,16000,C
+Eurocargo Genova,2005,16000,C
+Eurocargo Palermo,2006,16000,C
+Eurocargo Catania,2007,16000,C
+Eurocargo Cagliari,2008,16000,C
+Eurocargo Olbia,2009,16000,C
+Eurocargo Livorno,2010,16000,C
+Eurocargo Ancona,2011,16000,C
+Eurocargo Brindisi,2012,16000,C
+RoRo Italia,2015,20000,C
+RoRo Espana,2016,20000,C
+RoRo France,2017,20000,C
+RoRo Greece,2018,20000,C
+RoRo Malta,2019,20000,C
+RoRo Cyprus,2020,20000,C
+Eurocargo Lisbona,2013,16000,C
+Eurocargo Madrid,2014,16000,C
+Eurocargo Parigi,2015,16000,C
+Eurocargo Londra,2016,16000,C
+Isola di Ischia,1995,350,A
+Isola di Salina,1996,350,A
+Isola di Lipari,1997,350,A
+Isola di Panarea,1998,350,A
+Isola di Alicudi,1999,350,A
+Isola di Filicudi,2000,350,A
+Isola di Levanzo,2001,350,A
+Isola di Favignana,2002,350,A
+Isola di Marettimo,2003,350,A
+Isola di Pantelleria,2004,350,A
+Isola di Lampedusa,2005,350,A
+Isola di Linosa,2006,350,A
+Isola di Ventotene,2007,350,A
+Isola di Gorgona,2008,350,A
+Isola di Pianosa,2009,350,A
+Isola di Montecristo,2010,350,A
+Isola di Giglio,2011,350,A
+Isola di Giannutri,2012,350,A
+Isola di San Pietro,2013,350,A
+Isola di Sant'Antioco,2014,350,A
+Isola di Maddalena,2015,350,A
+Isola di Caprera,2016,350,A
+Isola di Spargi,2017,350,A
+Isola di Budelli,2018,350,A
+Isola di Razzoli,2019,350,A
+SNAV Aquila,1990,250,A
+SNAV Falco,1991,250,A
+SNAV Gabbiano,1992,250,A
+SNAV Nibbio,1993,250,A
+SNAV Albatros,1994,250,A
+SNAV Cormorano,1995,250,A
+SNAV Pellicano,1996,250,A
+SNAV Airone,1997,250,A
+SNAV Cigno,1998,250,A
+SNAV Rondine,1999,250,A
+SNAV Sparviero,2000,250,A
+SNAV Poiana,2001,250,A
+SNAV Civetta,2002,250,A
+SNAV Gufo,2003,250,A
+SNAV Barbagianni,2004,250,A
+Capri Jet,1998,400,K
+Ischia Jet,1999,400,K
+Sorrento Jet,2000,400,K
+Amalfi Jet,2001,400,K
+Positano Jet,2002,400,K
+Napoli Jet,2003,400,K
+Salerno Jet,2004,400,K
+Vesuvius Jet,2005,400,K
+Nettuno Jet,2006,400,K
+Poseidon Jet,2007,400,K
+Tritone Jet,2008,400,K
+Sirena Jet,2009,400,K
+Delfino Jet,2010,400,K
+Gabbiano Jet,2011,400,K
+Albatros Jet,2012,400,K
+Corsaro Jet,2013,400,K
+Pirata Jet,2014,400,K
+Bucaniere Jet,2015,400,K
+Vulcano Jet,2016,400,K
+Stromboli Jet,2017,400,K
+Etna Jet,2018,400,K
+Vesuvio Jet,2019,400,K
+Isola Jet,2020,400,K
+Blu Jet,2021,400,K
+Star Jet,2022,400,K
+Sun Jet,2023,400,K
+Moon Jet,2024,400,K
+Sky Jet,2025,400,K
+Sea Jet,1995,400,K
+Ocean Jet,1996,400,K
+Magic Jet,1997,400,K
+Speedy Jet,1998,400,K
+Fast Jet,1999,400,K
+Rapid Jet,2000,400,K
+Turbo Jet,2001,400,K
+Super Jet,2002,400,K
+Mega Jet,2003,400,K
+Hyper Jet,2004,400,K
+Ultra Jet,2005,400,K
+Max Jet,2006,400,K
+Motonave Sirena,2000,100,M
+Motonave Delfino,2001,100,M
+Motonave Nettuno,2002,100,M
+Motonave Poseidone,2003,100,M
+Motonave Tritone,2004,100,M
+Motonave Nereide,2005,100,M
+Motonave Teti,2006,100,M
+Motonave Anfitrite,2007,100,M
+Motonave Galatea,2008,100,M
+Motonave Calipso,2009,100,M
+Motonave Eco,2010,100,M
+Motonave Narciso,2011,100,M
+Motonave Apollo,2012,100,M
+Motonave Diana,2013,100,M
+Motonave Venere,2014,100,M
+Motonave Marte,2015,100,M
+Motonave Giove,2016,100,M
+Motonave Saturno,2017,100,M
+Motonave Urano,2018,100,M
+Motonave Plutone,2019,100,M
+Motonave Minerva,2020,100,M
+Motonave Giunone,2021,100,M
+Motonave Cerere,2022,100,M
+Motonave Vesta,2023,100,M
+Motonave Bacco,2024,100,M
+Motonave Mercurio,2025,100,M
+Motonave Vulcano,2000,100,M
+Motonave Ercole,2001,100,M
+Motonave Perseo,2002,100,M
+Motonave Teseo,2003,100,M
+Motonave Giasone,2004,100,M
+Motonave Achille,2005,100,M
+Motonave Ulisse,2006,100,M
+Motonave Enea,2007,100,M
+Motonave Ettore,2008,100,M
+Motonave Paride,2009,100,M
+Motonave Priamo,2010,100,M
+Motonave Agamennone,2011,100,M
+Motonave Menelao,2012,100,M
+Motonave Aiace,2013,100,M
+Motonave Diomede,2014,100,M
+Motonave Odisseo,2015,100,M
+Motonave Penelope,2016,100,M
+Motonave Telemaco,2017,100,M
+Motonave Nausicaa,2018,100,M
+Motonave Circe,2019,100,M
+Motonave Polifemo,2020,100,M
+Motonave Scilla,2021,100,M
+Motonave Cariddi,2022,100,M
+Motonave Eolo,2023,100,M
+Moby Zaffiro,1998,15000,T
+Moby Rubino,1999,15000,T
+Moby Smeraldo,2000,16000,T
+Moby Topazio,2001,16000,T
+Moby Cristallo,2002,17000,T
+Moby Diamante,2003,17000,T
+Moby Perla,2004,18000,T
+Moby Corallo,2005,18000,T
+Moby Giada,2006,19000,T
+Moby Opale,2007,19000,T
+Moby Ambra,2008,20000,T
+Moby Onice,2009,20000,T
+Moby Agata,2010,21000,T
+Moby Quarzo,2011,21000,T
+Moby Granato,2012,21000,T
+GNV Aurora,1995,31000,T
+GNV Tramonto,1996,31000,T
+GNV Zenith,1998,32000,T
+GNV Nadir,1999,32000,T
+GNV Meridiano,2000,33000,T
+GNV Parallelo,2001,33000,T
+GNV Equatore,2004,34000,T
+GNV Tropico,2005,34000,T
+GNV Artico,2008,35000,T
+GNV Antartico,2010,35000,T
+Corsica Azzurra,1985,12000,T
+Corsica Bianca,1986,12000,T
+Corsica Verde,1987,13000,T
+Corsica Gialla,1988,13000,T
+Corsica Rossa,1989,14000,T
+Sardinia Azzurra,1990,14000,T
+Sardinia Bianca,1991,15000,T
+Sardinia Verde,1992,15000,T
+Sardinia Gialla,1993,16000,T
+Sardinia Rossa,1994,16000,T
+Trinacria,2002,24000,T
+Ausonia,2004,24000,T
+Partenope,2006,25000,T
+Esperia,2008,25000,T
+Hesperia,2010,25000,T
+Grande Atlantide,2000,19000,C
+Grande Lemuria,2001,19000,C
+Grande Mu,2002,20000,C
+Grande Pangea,2003,20000,C
+Grande Gondwana,2004,21000,C
+Grande Laurasia,2005,21000,C
+Grande Eurasia,2006,22000,C
+Grande Sudamerica,2007,22000,C
+Grande Nordamerica,2008,22000,C
+Grande Antartide,2009,23000,C
+Grande Artide,2010,23000,C
+Eurocargo Atene,2005,17000,C
+Eurocargo Berlino,2006,17000,C
+Eurocargo Varsavia,2007,17000,C
+Eurocargo Praga,2008,18000,C
+Eurocargo Vienna,2009,18000,C
+Eurocargo Budapest,2010,18000,C
+Eurocargo Bucarest,2011,19000,C
+Eurocargo Sofia,2012,19000,C
+Eurocargo Belgrado,2013,19000,C
+Eurocargo Zagabria,2014,20000,C
+Eurocargo Lubiana,2015,20000,C
+Eurocargo Bratislava,2016,20000,C
+Eurocargo Amsterdam,2017,21000,C
+Eurocargo Bruxelles,2018,21000,C
+Eurocargo Dublino,2019,21000,C
+Eurocargo Copenaghen,2020,22000,C
+Eurocargo Stoccolma,2021,22000,C
+Eurocargo Oslo,2022,22000,C
+Eurocargo Helsinki,2023,22000,C
+SNAV Aquilotto,1995,260,A
+SNAV Condor,1996,260,A
+SNAV Falchetto,1997,270,A
+SNAV Gheppio,1998,270,A
+SNAV Allodola,1999,280,A
+SNAV Pettirosso,2000,280,A
+SNAV Fringuello,2001,280,A
+SNAV Usignolo,2002,290,A
+SNAV Capinera,2003,290,A
+SNAV Merlo,2004,300,A
+SNAV Tordo,2005,300,A
+SNAV Storno,2006,300,A
+SNAV Corvo,2007,310,A
+SNAV Cornacchia,2008,310,A
+SNAV Gazza,2009,310,A
+SNAV Ghiandaia,2010,320,A
+SNAV Picchio,2011,320,A
+SNAV Assiolo,2012,320,A
+Freccia Adriatica,1990,220,A
+Freccia Tirrenica,1991,220,A
+Freccia Ionica,1992,230,A
+Freccia Ligure,1993,230,A
+Freccia Sarda,1994,240,A
+Freccia Sicula,1995,240,A
+Freccia Partenopea,1996,250,A
+Freccia Elbana,1997,250,A
+Freccia Pontina,1998,260,A
+Freccia Eoliana,1999,260,A
+Freccia Egadina,2000,270,A
+Freccia Pelagica,2001,270,A
+Scirocco Jet,2005,420,K
+Libeccio Jet,2006,420,K
+Maestrale Jet,2007,430,K
+Grecale Jet,2008,430,K
+Tramontana Jet,2009,440,K
+Ostro Jet,2010,440,K
+Ponente Jet,2011,450,K
+Levante Jet,2012,450,K
+Bora Jet,2013,460,K
+Foehn Jet,2014,460,K
+Zefiro Jet,2015,470,K
+Eolo Jet,2016,470,K
+Red Jet,2010,380,K
+Blue Jet,2011,380,K
+Green Jet,2012,390,K
+Yellow Jet,2013,390,K
+White Jet,2014,400,K
+Black Jet,2015,400,K
+Silver Jet,2016,410,K
+Gold Jet,2017,410,K
+Platinum Jet,2018,420,K
+Bronze Jet,2019,420,K
+Comet Jet,2018,450,K
+Asteroid Jet,2019,450,K
+Meteor Jet,2020,460,K
+Galaxy Jet,2021,460,K
+Nebula Jet,2022,470,K
+Orbit Jet,2023,470,K
+Starship Jet,2024,480,K
+Rocket Jet,2025,480,K
+Motonave Po,2005,110,M
+Motonave Adige,2006,110,M
+Motonave Tevere,2007,115,M
+Motonave Arno,2008,115,M
+Motonave Volturno,2009,120,M
+Motonave Liri,2010,120,M
+Motonave Brenta,2011,125,M
+Motonave Piave,2012,125,M
+Motonave Isonzo,2013,130,M
+Motonave Tagliamento,2014,130,M
+Motonave Reno,2015,135,M
+Motonave Senna,2016,135,M
+Motonave Tamigi,2017,140,M
+Motonave Danubio,2018,140,M
+Motonave Volga,2019,145,M
+Motonave Ural,2020,145,M
+Motonave Ob,2021,150,M
+Motonave Yenisei,2022,150,M
+Motonave Lena,2023,150,M
+Motonave Amur,2024,150,M
