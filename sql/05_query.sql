@@ -13,23 +13,30 @@ AND NOT EXISTS ( -- e
     SELECT NomeComp FROM PROPRIETA PA WHERE PA.CodiceRegistrazione = P1.CodiceRegistrazione -- ... tranne le Compagnie che avevano P1
 );
 
---!! DA SISTEMARE !!
 --2. Per ogni tipo, l imbarcazione che vede il maggior numero di città distinte
-SELECT I.Tipo, I.CodiceRegistrazione, COUNT(DISTINCT Citta.NomePartenza) AS Totale
+-- MODIFICA: ritorna il nome della imbarcazione e non il codice di registrazione
+SELECT I.Tipo, I.CodiceRegistrazione, COUNT(DISTINCT CittaToccata.NomeCitta) AS Totale
 FROM IMBARCAZIONE I
-JOIN COLLEGAMENTO Citta ON I.CodiceRegistrazione = Citta.CodiceRegistrazione -- join di collegamento su codice della barca usata
-GROUP BY I.Tipo, I.CodiceRegistrazione -- raggruppo per ogni barca
-HAVING COUNT(DISTINCT Citta.NomePartenza) = ( -- contando le barche
+JOIN (
+    SELECT CodiceRegistrazione, NomePartenza AS NomeCitta FROM COLLEGAMENTO
+    UNION
+    SELECT CodiceRegistrazione, NomeArrivo AS NomeCitta FROM COLLEGAMENTO
+) CittaToccata ON I.CodiceRegistrazione = CittaToccata.CodiceRegistrazione
+GROUP BY I.Tipo, I.CodiceRegistrazione
+HAVING COUNT(DISTINCT CittaToccata.NomeCitta) = (
     SELECT MAX(Conteggio.Tot)
     FROM (
-        SELECT I2.Tipo, COUNT(DISTINCT C2.NomePartenza) AS Tot
+        SELECT I2.Tipo, COUNT(DISTINCT CT2.NomeCitta) AS Tot
         FROM IMBARCAZIONE I2
-        JOIN COLLEGAMENTO C2 ON I2.CodiceRegistrazione = C2.CodiceRegistrazione
+        JOIN (
+            SELECT CodiceRegistrazione, NomePartenza AS NomeCitta FROM COLLEGAMENTO
+            UNION
+            SELECT CodiceRegistrazione, NomeArrivo AS NomeCitta FROM COLLEGAMENTO
+        ) CT2 ON I2.CodiceRegistrazione = CT2.CodiceRegistrazione
         GROUP BY I2.Tipo, I2.CodiceRegistrazione
     ) Conteggio
     WHERE Conteggio.Tipo = I.Tipo
-);
-
+); 
 --3. Compagnie collegate SOLO con città < 70000 abitanti 
 SELECT DISTINCT C.NomeComp 
 FROM COLLEGAMENTO C 
