@@ -8,6 +8,7 @@ NUM_IMBARCAZIONE = 450
 NUM_CITTA = 100
 NUM_COLLEGAMENTO = 5000
 NUM_PROPRIETA = 700
+NUM_CODICE_REGISTRAZIONE = 9999
 
 index_barche = 0;
 # DEFINIZIONE PERCORSI INTELLIGENTE
@@ -34,7 +35,9 @@ def cambia_nome_tipo(T):
             return "altro"
 
 def genera_codice_registrazione(): # !! faccio incrementale
-    return f"NAV-{random.randint(10000, 99999)}"
+    global NUM_CODICE_REGISTRAZIONE
+    NUM_CODICE_REGISTRAZIONE += 1
+    return NUM_CODICE_REGISTRAZIONE 
 
 def carica_citta_da_file(nome_file_path):
     citta_list = []
@@ -52,7 +55,7 @@ def carica_citta_da_file(nome_file_path):
         return citta_list
     except FileNotFoundError:
         print(f"File {nome_file_path} non trovato.")
-        return [{'nome': 'Napoli', 'regione': 'Campania', 'provincia': 'NA', 'abitanti': 960000}]
+        return [{'nome': 'Napoli', 'regione': 'Campania', 'provincia': 'NA', 'abitanti': 960000}] # evitare errori nell'inserimento dei successivi
 
 def carica_compagnie_da_file(nome_file_path):
     compagnie = []
@@ -114,6 +117,7 @@ def prepara_liste_base():
     lista_citta = carica_citta_da_file(PATH_CITTA)[:NUM_CITTA]
     lista_imbarcazioni_txt = carica_imbarcazioni_da_file(PATH_BARCHE)[:NUM_IMBARCAZIONE]
     
+    # riempio le liste anche se non ci sono i file
     if not lista_compagnie_txt:
         lista_compagnie_txt = [{'nome': f"Compagnia-{i}", 'amministratore': 'Admin', 'capitale': 5000000.00} for i in range(1, NUM_COMPAGNIA + 1)]
     if not lista_imbarcazioni_txt:
@@ -128,6 +132,8 @@ def genera_sql_compagnia(lista_compagnie_txt):
     
     for i in range(NUM_COMPAGNIA):
         comp_info = lista_compagnie_txt[i % len(lista_compagnie_txt)]
+
+        # per gestire il fatto che i nomi non potrebbero bastare accontentare il numero di compagnie richieste, calcolo cosi + aggiungo suffisso 
         giri_di_lista = i // len(lista_compagnie_txt)
         suffisso = f" {giri_di_lista + 1}" if giri_di_lista > 0 else ""
         
@@ -151,8 +157,9 @@ def genera_sql_imbarcazione(lista_imbarcazioni_txt):
         imb_info = lista_imbarcazioni_txt[i % len(lista_imbarcazioni_txt)]
         
         codice = genera_codice_registrazione()
-        while codice in [imb['codice'] for imb in imbarcazioni_generate]:
-            codice = genera_codice_registrazione()
+
+        # while codice in [imb['codice'] for imb in imbarcazioni_generate]:
+        #    codice = genera_codice_registrazione()
             
         anno = imb_info['anno']
         peso = imb_info['peso']
