@@ -371,9 +371,20 @@ BEGIN
         RAISE NOTICE 'Trigger 4 - Test Negativo SUPERATO (Errore intercettato: %)', SQLERRM;
     END;
 
-    -- PULIZIA DATI
-    DELETE FROM COLLEGAMENTO WHERE Num = 1 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
-    DELETE FROM CITTA WHERE Nome IN ('A', 'B');
+    -- TEST CINQUE: Modifica della chiave primaria 
+    BEGIN
+        UPDATE COLLEGAMENTO 
+        SET Num = 99 
+        WHERE Num = 1 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';
+        
+        RAISE NOTICE 'Trigger 4 - Test UPDATE su se stesso: OK (Nessun falso positivo)';
+    EXCEPTION WHEN OTHERS THEN
+        RAISE NOTICE 'Trigger 4 - Test UPDATE FALLITO (Il trigger ha bloccato erroneamente l''aggiornamento): %', SQLERRM;
+        test_superato := FALSE;
+    END;
+
+-- PULIZIA DATI
+    DELETE FROM COLLEGAMENTO WHERE Num = 99 AND NomePartenza = 'A' AND NomeArrivo = 'B' AND CodiceRegistrazione = 'NAV-3';    DELETE FROM CITTA WHERE Nome IN ('A', 'B');
     DELETE FROM PROPRIETA WHERE NomeComp = 'CompagniaProva' AND CodiceRegistrazione = 'NAV-3' AND DataInizio = '2004-03-23';
     DELETE FROM IMBARCAZIONE WHERE CodiceRegistrazione = 'NAV-3';
     DELETE FROM COMPAGNIA WHERE Nome = 'CompagniaProva';

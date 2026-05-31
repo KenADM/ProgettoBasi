@@ -283,7 +283,7 @@ def genera_sql_collegamento(nomi_citta_generati, imbarcazioni_generate, valori_p
 def genera_tutto():
     sql_lines = []
     sql_lines.append("/* ========================================================\n")
-    sql_lines.append("   DATI GENERATI AUTOMATICAMENTE VIA PYTHON\n")
+    sql_lines.append("   DATI GENERATI AUTOMATICAMENTE VIA PYTHON brutto\n")
     sql_lines.append("   ======================================================== */\n")
 
     # 0. Setup Dati Base

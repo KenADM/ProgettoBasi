@@ -482,11 +482,11 @@ INSERT INTO IMBARCAZIONE (CodiceRegistrazione, AnnoCostruzione, Peso, Tipo) VALU
 
 -- POPOLAMENTO CITTA
 INSERT INTO CITTA (Nome, Regione, Provincia, NumAbitanti, NumCompagnieColleganti) VALUES
-('Napoli', 'Campania', 'NA', 960000, 0),
+('Napoli', 'Campania', 'NA', 7000, 0),
 ('Palermo', 'Sicilia', 'PA', 630000, 0),
-('Genova', 'Liguria', 'GE', 580000, 0),
+('Genova', 'Liguria', 'GE', 1000, 0),
 ('Bari', 'Puglia', 'BA', 320000, 0),
-('Messina', 'Sicilia', 'ME', 220000, 0),
+('Messina', 'Sicilia', 'ME', 1000, 0),
 ('Trieste', 'Friuli-Venezia Giulia', 'TS', 200000, 0),
 ('Taranto', 'Puglia', 'TA', 190000, 0),
 ('Reggio Calabria', 'Calabria', 'RC', 170000, 0),

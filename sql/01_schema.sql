@@ -32,7 +32,7 @@ CREATE TABLE COLLEGAMENTO (
     FOREIGN KEY (NomePartenza) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeArrivo) REFERENCES CITTA(Nome) ON UPDATE CASCADE,
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
+    FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione) ON UPDATE CASCADE
 
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE PROPRIETA (
     DataInizio DATE,
     PRIMARY KEY (NomeComp, CodiceRegistrazione, DataInizio),
     FOREIGN KEY (NomeComp) REFERENCES COMPAGNIA(Nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione)
+    FOREIGN KEY (CodiceRegistrazione) REFERENCES IMBARCAZIONE(CodiceRegistrazione) ON UPDATE CASCADE
 );
 
 
@@ -187,7 +187,7 @@ BEGIN
     LIMIT 1;
 
     -- controllo che la barca abbia un proprietario
-    IF ValidProprietario.NomeComp IS NULL THEN
+    IF NOT FOUND THEN
         RAISE EXCEPTION 'Errore: La barca % non risulta registrata a nessuna compagnia.', NEW.CodiceRegistrazione;
     END IF;
 
@@ -245,28 +245,68 @@ EXECUTE FUNCTION controlla_data_acquisto_barca();
 CREATE OR REPLACE FUNCTION controlla_barche_contemporanee()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
 BEGIN
-    
-    IF EXISTS (
-        SELECT 1 FROM Collegamento C
-        WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione -- Stessa barca
-        AND (
-            C.Num <> NEW.Num
-            OR C.NomePartenza <> NEW.NomePartenza
-            OR C.NomeArrivo <> NEW.NomeArrivo
-            OR C.CodiceRegistrazione <> NEW.CodiceRegistrazione
-            ) -- Escludiamo il collegamento stesso (utile per UPDATE)
-        AND C.OraPartenza < NEW.OraArrivo 
-        AND C.OraArrivo > NEW.OraPartenza
-    ) THEN
-        -- Se trova un conflitto, blocca tutto
-        RAISE EXCEPTION 'Errore: La barca % è già assegnata a collegamento esistente.', NEW.CodiceRegistrazione;
+    IF TG_OP = 'INSERT' THEN
+        IF EXISTS (
+            SELECT 1 FROM Collegamento C
+            WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione 
+            AND C.OraPartenza < NEW.OraArrivo 
+            AND C.OraArrivo > NEW.OraPartenza
+        ) THEN
+            RAISE EXCEPTION 'Errore: La barca % è già assegnata a un collegamento esistente in questo orario.', NEW.CodiceRegistrazione;
+        END IF;
+
+    ELSIF TG_OP = 'UPDATE' THEN
+        IF EXISTS (
+            SELECT 1 FROM Collegamento C
+            WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione 
+            -- Escludiamo la VECCHIA versione di questo specifico collegamento
+            AND NOT (C.Num = OLD.Num AND C.NomePartenza = OLD.NomePartenza AND C.NomeArrivo = OLD.NomeArrivo AND C.CodiceRegistrazione = OLD.CodiceRegistrazione)
+            AND C.OraPartenza < NEW.OraArrivo 
+            AND C.OraArrivo > NEW.OraPartenza
+        ) THEN
+            RAISE EXCEPTION 'Errore: La barca % è già assegnata a un collegamento esistente in questo orario.', NEW.CodiceRegistrazione;
+        END IF;
     END IF;
 
     RETURN NEW;
 END;
 $$;
 
+DROP TRIGGER IF EXISTS check_barche_contemporanee ON Collegamento;
+
 CREATE TRIGGER check_barche_contemporanee
 BEFORE INSERT OR UPDATE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION controlla_barche_contemporanee();
+
+-- 5 Impedire l'acquisto o il trasferimento di una barca se è attiva in dei collegamenti
+CREATE OR REPLACE FUNCTION controlla_barca_libera_per_acquisto()
+RETURNS TRIGGER LANGUAGE plpgsql AS $$
+BEGIN
+    -- Controlliamo se stiamo inserendo un nuovo acquisto, 
+    -- oppure se stiamo modificando il proprietario (UPDATE della chiave)
+    IF TG_OP = 'INSERT' OR (TG_OP = 'UPDATE' AND OLD.NomeComp != NEW.NomeComp) THEN
+        
+        -- Andiamo a cercare se la barca esiste nell'elenco dei viaggi giornalieri
+        IF EXISTS (
+            SELECT 1 FROM COLLEGAMENTO C
+            WHERE C.CodiceRegistrazione = NEW.CodiceRegistrazione
+        ) THEN
+            -- Se la trova, blocchiamo la compravendita
+            RAISE EXCEPTION 'Errore: La barca % non può essere acquistata/trasferita perché è attualmente in uso in uno o più collegamenti. Rimuovere prima i collegamenti.', NEW.CodiceRegistrazione;
+        END IF;
+        
+    END IF;
+
+    -- Se la barca è libera, diamo il via libera alla compravendita
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS check_barca_libera_per_acquisto ON PROPRIETA;
+
+CREATE TRIGGER check_barca_libera_per_acquisto
+-- Questo controllo va fatto PRIMA di registrare il nuovo proprietario
+BEFORE INSERT OR UPDATE ON PROPRIETA
+FOR EACH ROW
+EXECUTE FUNCTION controlla_barca_libera_per_acquisto();

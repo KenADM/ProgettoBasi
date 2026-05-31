@@ -37,11 +37,12 @@ HAVING COUNT(DISTINCT CittaToccata.NomeCitta) = (
     ) Conteggio
     WHERE Conteggio.Tipo = I.Tipo
 ); 
+
 --3. Compagnie collegate SOLO con città < 70000 abitanti 
 SELECT DISTINCT C.NomeComp 
 FROM COLLEGAMENTO C 
 JOIN CITTA Ci ON C.NomePartenza = Ci.Nome OR C.NomeArrivo = Ci.Nome 
-WHERE Ci.NumAbitanti < 70000;
+WHERE Ci.NumAbitanti > 70000;
 
 --4. Compagnie con AL PIÙ due collegamenti (Tipo A e Lombardia) !! riparto il controllo da qui
 SELECT Nome
