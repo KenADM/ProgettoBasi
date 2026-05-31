@@ -51,49 +51,103 @@ CREATE TABLE PROPRIETA (
 -- ridondanza NumCompagnieColleganti
 CREATE OR REPLACE FUNCTION aggiorno_NumCompagnieColleganti()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DECLARE
+    citta_partenza VARCHAR;
+    citta_arrivo VARCHAR;
 BEGIN
-    -- Aggiorniamo le Città coinvolte (sia quella di partenza che quella di arrivo)
-    UPDATE Citta
+    -- 1. Determiniamo quali città aggiornare in base all'operazione
+    IF TG_OP = 'DELETE' THEN
+        citta_partenza := OLD.NomePartenza;
+        citta_arrivo := OLD.NomeArrivo;
+    ELSE
+        citta_partenza := NEW.NomePartenza;
+        citta_arrivo := NEW.NomeArrivo;
+    END IF;
+
+    -- 2. Aggiorniamo le città toccate dal nuovo inserimento o dalla cancellazione
+    UPDATE CITTA
     SET NumCompagnieColleganti = (
-        -- Conta le compagnie UNICHE (senza duplicati)
         SELECT COUNT(DISTINCT NomeComp)
         FROM COLLEGAMENTO
-        -- ...che partono o arrivano in QUESTA specifica città che stiamo aggiornando
-        WHERE NomePartenza = Citta.Nome OR NomeArrivo = Citta.Nome
+        WHERE NomePartenza = CITTA.Nome OR NomeArrivo = CITTA.Nome
     )
-    -- Applica questo aggiornamento solo alle due città toccate dal nuovo inserimento
-    WHERE Nome IN (NEW.NomePartenza, NEW.NomeArrivo);
+    WHERE Nome IN (citta_partenza, citta_arrivo);
 
-    RETURN NEW;
+    -- 3. In caso di UPDATE, se le città sono cambiate, dobbiamo aggiornare anche i totali delle VECCHIE città
+    IF TG_OP = 'UPDATE' AND (OLD.NomePartenza != NEW.NomePartenza OR OLD.NomeArrivo != NEW.NomeArrivo) THEN
+        UPDATE CITTA
+        SET NumCompagnieColleganti = (
+            SELECT COUNT(DISTINCT NomeComp)
+            FROM COLLEGAMENTO
+            WHERE NomePartenza = CITTA.Nome OR NomeArrivo = CITTA.Nome
+        )
+        WHERE Nome IN (OLD.NomePartenza, OLD.NomeArrivo);
+    END IF;
+
+    -- 4. Ritorno corretto in base all'operazione
+    IF TG_OP = 'DELETE' THEN
+        RETURN OLD;
+    ELSE
+        RETURN NEW;
+    END IF;
 END;
 $$;
 
+DROP TRIGGER IF EXISTS aggiorno_NumCompagnieColleganti ON Collegamento;
+
 CREATE TRIGGER aggiorno_NumCompagnieColleganti
-AFTER INSERT OR UPDATE ON Collegamento
+AFTER INSERT OR UPDATE OR DELETE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION aggiorno_NumCompagnieColleganti();
-
 
 -- ridondanza NumCittaServite 
 CREATE OR REPLACE FUNCTION aggiorno_NumCittaServite()
 RETURNS TRIGGER LANGUAGE plpgsql AS $$
+DECLARE
+    compagnia_coinvolta VARCHAR;
 BEGIN
-    -- Aggiorniamo il numero di città servite con una singola scansione
+    -- 1. Determiniamo la compagnia in base all'operazione
+    IF TG_OP = 'DELETE' THEN
+        compagnia_coinvolta := OLD.NomeComp;
+    ELSE
+        compagnia_coinvolta := NEW.NomeComp;
+    END IF;
+
+    -- 2. Aggiorniamo il numero di città servite per la compagnia coinvolta
     UPDATE COMPAGNIA
     SET NumCittaServite = (
         SELECT COUNT(DISTINCT porto)
         FROM COLLEGAMENTO,
              UNNEST(ARRAY[NomePartenza, NomeArrivo]) AS porto
-        WHERE NomeComp = NEW.NomeComp
+        WHERE NomeComp = compagnia_coinvolta
     )
-    WHERE Nome = NEW.NomeComp;
+    WHERE Nome = compagnia_coinvolta;
 
-    RETURN NEW;
+    -- 3. Se è un UPDATE e la compagnia è cambiata (es. cessione del collegamento), aggiorniamo anche la vecchia compagnia
+    IF TG_OP = 'UPDATE' AND OLD.NomeComp != NEW.NomeComp THEN
+        UPDATE COMPAGNIA
+        SET NumCittaServite = (
+            SELECT COUNT(DISTINCT porto)
+            FROM COLLEGAMENTO,
+                 UNNEST(ARRAY[NomePartenza, NomeArrivo]) AS porto
+            WHERE NomeComp = OLD.NomeComp
+        )
+        WHERE Nome = OLD.NomeComp;
+    END IF;
+
+    -- 4. Ritorno corretto
+    IF TG_OP = 'DELETE' THEN
+        RETURN OLD;
+    ELSE
+        RETURN NEW;
+    END IF;
 END;
-$$ ;
+$$;
+
+DROP TRIGGER IF EXISTS aggiorno_NumCittaServite ON Collegamento;
 
 CREATE TRIGGER aggiorno_NumCittaServite
-AFTER INSERT OR UPDATE ON Collegamento
+AFTER INSERT OR UPDATE OR DELETE ON Collegamento
 FOR EACH ROW
 EXECUTE FUNCTION aggiorno_NumCittaServite();
 
