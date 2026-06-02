@@ -6287,4 +6287,3 @@ INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo,
 INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES (4998, 'La Spezia', '20:30:00', 'Sanremo', '22:57:00', 'Minoan Lines', '10403');
 INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES (4999, 'Anzio', '00:00:00', 'Alassio', '00:45:00', 'Jadrolinija', '10404');
 INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES (5000, 'Paola', '00:45:00', 'Civitavecchia', '01:04:00', 'Jadrolinija', '10404');
-
