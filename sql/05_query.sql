@@ -1,3 +1,21 @@
+--3. Compagnie collegate SOLO con città < 70000 abitanti 
+SELECT DISTINCT NomeComp 
+FROM COLLEGAMENTO
+EXCEPT 
+SELECT DISTINCT C.NomeComp 
+FROM COLLEGAMENTO C 
+JOIN CITTA Ci ON C.NomePartenza = Ci.Nome OR C.NomeArrivo = Ci.Nome 
+WHERE Ci.NumAbitanti >= 70000;
+
+--4. Compagnie con AL PIÙ due collegamenti (Tipo A e Lombardia) 
+SELECT Nome 
+FROM COMPAGNIA 
+WHERE (
+    SELECT COUNT(*) 
+    FROM COLLEGAMENTO Co 
+    WHERE Co.NomeComp = COMPAGNIA.Nome
+) <= 2;
+
 --1. Coppie di imbarcazioni appartenute a esattamente le stesse compagnie
 SELECT DISTINCT P1.CodiceRegistrazione, P2.CodiceRegistrazione
 FROM PROPRIETA P1, PROPRIETA P2
@@ -37,23 +55,7 @@ HAVING COUNT(DISTINCT CittaToccata.NomeCitta) = (
     WHERE Conteggio.Tipo = I.Tipo
 ); 
 
---3. Compagnie collegate SOLO con città < 70000 abitanti 
-SELECT DISTINCT NomeComp 
-FROM COLLEGAMENTO
-EXCEPT 
-SELECT DISTINCT C.NomeComp 
-FROM COLLEGAMENTO C 
-JOIN CITTA Ci ON C.NomePartenza = Ci.Nome OR C.NomeArrivo = Ci.Nome 
-WHERE Ci.NumAbitanti >= 70000;
 
---4. Compagnie con AL PIÙ due collegamenti (Tipo A e Lombardia) 
-SELECT Nome 
-FROM COMPAGNIA 
-WHERE (
-    SELECT COUNT(*) 
-    FROM COLLEGAMENTO Co 
-    WHERE Co.NomeComp = COMPAGNIA.Nome
-) <= 2;
 
 --5. Coppie di imbarcazioni che partono dallo stesso posto ma arrivano in posti diversi
 SELECT DISTINCT C1.CodiceRegistrazione, C2.CodiceRegistrazione
