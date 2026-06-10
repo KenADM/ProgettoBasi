@@ -1,3 +1,43 @@
+Isola di Ischia,1995,350,A
+Isola di Salina,1996,350,A
+Isola di Lipari,1997,350,A
+Isola di Panarea,1998,350,A
+Isola di Alicudi,1999,350,A
+Isola di Filicudi,2000,350,A
+Isola di Levanzo,2001,350,A
+Isola di Favignana,2002,350,A
+Isola di Marettimo,2003,350,A
+Isola di Pantelleria,2004,350,A
+Isola di Lampedusa,2005,350,A
+Isola di Linosa,2006,350,A
+Isola di Ventotene,2007,350,A
+Isola di Gorgona,2008,350,A
+Isola di Pianosa,2009,350,A
+Isola di Montecristo,2010,350,A
+Isola di Giglio,2011,350,A
+Isola di Giannutri,2012,350,A
+Isola di San Pietro,2013,350,A
+Isola di Sant'Antioco,2014,350,A
+Isola di Maddalena,2015,350,A
+Isola di Caprera,2016,350,A
+Isola di Spargi,2017,350,A
+Isola di Budelli,2018,350,A
+Isola di Razzoli,2019,350,A
+SNAV Aquila,1990,250,A
+SNAV Falco,1991,250,A
+SNAV Gabbiano,1992,250,A
+SNAV Nibbio,1993,250,A
+SNAV Albatros,1994,250,A
+SNAV Cormorano,1995,250,A
+SNAV Pellicano,1996,250,A
+SNAV Airone,1997,250,A
+SNAV Cigno,1998,250,A
+SNAV Rondine,1999,250,A
+SNAV Sparviero,2000,250,A
+SNAV Poiana,2001,250,A
+SNAV Civetta,2002,250,A
+SNAV Gufo,2003,250,A
+SNAV Barbagianni,2004,250,A
 Vincenzo Florio,1999,30000,T
 Raffaele Rubattino,2000,30000,T
 Boccaccio,1985,12000,T
@@ -168,46 +208,6 @@ Eurocargo Lisbona,2013,16000,C
 Eurocargo Madrid,2014,16000,C
 Eurocargo Parigi,2015,16000,C
 Eurocargo Londra,2016,16000,C
-Isola di Ischia,1995,350,A
-Isola di Salina,1996,350,A
-Isola di Lipari,1997,350,A
-Isola di Panarea,1998,350,A
-Isola di Alicudi,1999,350,A
-Isola di Filicudi,2000,350,A
-Isola di Levanzo,2001,350,A
-Isola di Favignana,2002,350,A
-Isola di Marettimo,2003,350,A
-Isola di Pantelleria,2004,350,A
-Isola di Lampedusa,2005,350,A
-Isola di Linosa,2006,350,A
-Isola di Ventotene,2007,350,A
-Isola di Gorgona,2008,350,A
-Isola di Pianosa,2009,350,A
-Isola di Montecristo,2010,350,A
-Isola di Giglio,2011,350,A
-Isola di Giannutri,2012,350,A
-Isola di San Pietro,2013,350,A
-Isola di Sant'Antioco,2014,350,A
-Isola di Maddalena,2015,350,A
-Isola di Caprera,2016,350,A
-Isola di Spargi,2017,350,A
-Isola di Budelli,2018,350,A
-Isola di Razzoli,2019,350,A
-SNAV Aquila,1990,250,A
-SNAV Falco,1991,250,A
-SNAV Gabbiano,1992,250,A
-SNAV Nibbio,1993,250,A
-SNAV Albatros,1994,250,A
-SNAV Cormorano,1995,250,A
-SNAV Pellicano,1996,250,A
-SNAV Airone,1997,250,A
-SNAV Cigno,1998,250,A
-SNAV Rondine,1999,250,A
-SNAV Sparviero,2000,250,A
-SNAV Poiana,2001,250,A
-SNAV Civetta,2002,250,A
-SNAV Gufo,2003,250,A
-SNAV Barbagianni,2004,250,A
 Capri Jet,1998,400,K
 Ischia Jet,1999,400,K
 Sorrento Jet,2000,400,K
