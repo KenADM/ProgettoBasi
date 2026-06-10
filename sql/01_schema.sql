@@ -55,7 +55,7 @@ DECLARE
     citta_partenza VARCHAR;
     citta_arrivo VARCHAR;
 BEGIN
-    -- 1. Determiniamo quali città aggiornare in base all'operazione
+    -- 1. Determiniamo quali città aggiornare in base all'operazione !!! ultimo controllo sulle variabili usate
     IF TG_OP = 'DELETE' THEN
         citta_partenza := OLD.NomePartenza;
         citta_arrivo := OLD.NomeArrivo;
@@ -97,7 +97,7 @@ DROP TRIGGER IF EXISTS aggiorno_NumCompagnieColleganti ON Collegamento;
 
 CREATE TRIGGER aggiorno_NumCompagnieColleganti
 AFTER INSERT OR UPDATE OR DELETE ON Collegamento
-FOR EACH ROW
+FOR EACH ROW -- cambio con statement?
 EXECUTE FUNCTION aggiorno_NumCompagnieColleganti();
 
 -- ridondanza NumCittaServite 
