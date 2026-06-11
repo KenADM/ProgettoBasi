@@ -171,11 +171,20 @@ RETURNS TRIGGER LANGUAGE plpgsql AS $$
     BEGIN
         -- Cerchiamo SE ESISTE GIÀ un acquisto per la stessa barca nello stesso giorno, ma con una compagnia diversa
 
-        PERFORM * FROM Proprieta P
-        WHERE P.CodiceRegistrazione = NEW.CodiceRegistrazione 
-        AND P.DataInizio = NEW.DataInizio                    
-        AND P.NomeComp != NEW.NomeComp;   
-
+        IF TG_OP = 'INSERT' THEN
+            PERFORM * FROM Proprieta P
+            WHERE P.CodiceRegistrazione = NEW.CodiceRegistrazione 
+            AND P.DataInizio = NEW.DataInizio                    
+            AND P.NomeComp != NEW.NomeComp;
+        ELSIF TG_OP = 'UPDATE' THEN
+            PERFORM * FROM Proprieta P
+            WHERE P.CodiceRegistrazione = NEW.CodiceRegistrazione 
+            AND P.DataInizio = NEW.DataInizio                    
+            AND P.NomeComp != NEW.NomeComp
+            -- ESCLUDIAMO la riga stessa identificata dai vecchi valori
+            AND NOT (P.NomeComp = OLD.NomeComp AND P.CodiceRegistrazione = OLD.CodiceRegistrazione AND P.DataInizio = OLD.DataInizio);
+        END IF;
+        
         IF FOUND THEN
             RAISE EXCEPTION 'Errore: La barca % è già stata acquistata da un''altra compagnia in data %.', NEW.CodiceRegistrazione, NEW.DataInizio;
         END IF;
