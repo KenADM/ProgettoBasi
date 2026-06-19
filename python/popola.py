@@ -133,40 +133,45 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
     citta_piccole = [c['nome'] for c in citta_info if c['abitanti'] < 70000]
     citta_grandi = [c['nome'] for c in citta_info if c['abitanti'] >= 70000]
     
-    # Pilotaggio Query 3: La compagnia nomi_comp[1] sarà l'unica (o una delle poche)
-    # a collegare SOLO città piccole.
     comp_solo_piccole = nomi_comp[1]
 
     count = 0
-    # 1. PILOTAGGIO QUERY 4 (Aliscafi Lombardia):
-    # Facciamo in modo che comp[0] e comp[2..19] abbiano 3 viaggi (Excl da Query 4)
-    # e comp[19] ne abbia 1 (Incl in Query 4)
-    # Saltiamo nomi_comp[1] per ora per dedicarla alla Query 3
+    # Creiamo una lista per accumulare solo i valori (le tuple)
+    values_list = []
+
     for i in range(NUM_COMPAGNIA):
-        if i == 1: continue # Gestiamo comp[1] separatamente dopo
+        if i == 1: continue 
         comp_attuale = nomi_comp[i]
         aliscafo = [p['codice'] for p in proprieta if p['compagnia'] == comp_attuale and p['tipo'] == 'aliscafo'][0]
         num_viaggi = 3 if i != 19 else 1
         for _ in range(num_viaggi):
-            partenza = random.choice(citta_grandi) # Usiamo città grandi per assicurarci di escluderle da Q3
+            partenza = random.choice(citta_grandi) 
             ora_p = ora_libera_barca[aliscafo] + timedelta(minutes=15)
             ora_a = ora_p + timedelta(minutes=45)
-            sql.append(f"INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES ({count+1}, '{partenza}', '{ora_p.time()}', '{target_city_lombardia}', '{ora_a.time()}', '{comp_attuale}', '{aliscafo}');")
+            
+            # Escape degli apici singoli per evitare errori SQL
+            p_safe = partenza.replace("'", "''")
+            a_safe = target_city_lombardia.replace("'", "''")
+            c_safe = comp_attuale.replace("'", "''")
+            
+            values_list.append(f"({count+1}, '{p_safe}', '{ora_p.time()}', '{a_safe}', '{ora_a.time()}', '{c_safe}', '{aliscafo}')")
             ora_libera_barca[aliscafo] = ora_a
             count += 1
 
-    # 2. PILOTAGGIO QUERY 3 (Solo città < 70.000):
-    # Diamo alla comp_solo_piccole (nomi_comp[1]) alcuni viaggi solo tra città piccole.
     barca_piccola = [p['codice'] for p in proprieta if p['compagnia'] == comp_solo_piccole][0]
     for _ in range(5):
         p, a = random.sample(citta_piccole, 2)
         ora_p = ora_libera_barca[barca_piccola] + timedelta(minutes=20)
         ora_a = ora_p + timedelta(minutes=40)
-        sql.append(f"INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES ({count+1}, '{p}', '{ora_p.time()}', '{a}', '{ora_a.time()}', '{comp_solo_piccole}', '{barca_piccola}');")
+        
+        p_safe = p.replace("'", "''")
+        a_safe = a.replace("'", "''")
+        c_safe = comp_solo_piccole.replace("'", "''")
+        
+        values_list.append(f"({count+1}, '{p_safe}', '{ora_p.time()}', '{a_safe}', '{ora_a.time()}', '{c_safe}', '{barca_piccola}')")
         ora_libera_barca[barca_piccola] = ora_a
         count += 1
 
-    # 3. RIEMPIMENTO FINO A 5000
     barca_to_comp = {p['codice']: p['compagnia'] for p in proprieta}
     barca_to_tipo = {b['codice']: b['tipo'] for b in imbarcazioni}
 
@@ -174,15 +179,11 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
         cod = random.choice(list(barca_to_comp.keys()))
         comp = barca_to_comp[cod]
         
-        # Se è la compagnia "piccola", deve continuare a viaggiare solo in città piccole
         if comp == comp_solo_piccole:
             p, a = random.sample(citta_piccole, 2)
         else:
-            # Per tutte le altre, forziamo almeno un viaggio verso una città grande se non l'hanno già fatto
-            # ma per semplicità qui usiamo un mix casuale
             p, a = random.sample([c['nome'] for c in citta_info], 2)
             
-        # Manutenzione vincoli Query 4 (niente altri aliscafi in Lombardia)
         if barca_to_tipo[cod] == 'aliscafo' and any(c['nome'] == a and c['regione'] == 'Lombardia' for c in citta_info):
             continue
 
@@ -192,10 +193,25 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
             continue
         ora_a_dt = ora_p_dt + timedelta(minutes=random.randint(30, 90))
         
-        sql.append(f"INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES ({count+1}, '{p.replace(chr(39),chr(39)*2)}', '{ora_p_dt.time()}', '{a.replace(chr(39),chr(39)*2)}', '{ora_a_dt.time()}', '{comp.replace(chr(39),chr(39)*2)}', '{cod}');")
+        p_safe = p.replace("'", "''")
+        a_safe = a.replace("'", "''")
+        c_safe = comp.replace("'", "''")
+        
+        values_list.append(f"({count+1}, '{p_safe}', '{ora_p_dt.time()}', '{a_safe}', '{ora_a_dt.time()}', '{c_safe}', '{cod}')")
         ora_libera_barca[cod] = ora_a_dt
         count += 1
         
+    # Costruzione finale dell'unico blocco INSERT INTO
+    if values_list:
+        sql.append("INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES")
+        for i, val in enumerate(values_list):
+            if i == len(values_list) - 1:
+                # L'ultimo valore termina con il punto e virgola
+                sql.append(val + ";")
+            else:
+                # Gli altri valori terminano con la virgola
+                sql.append(val + ",")
+                
     return sql
 
 def genera_tutto():
