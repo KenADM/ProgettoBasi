@@ -136,7 +136,6 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
     comp_solo_piccole = nomi_comp[1]
 
     count = 0
-    # Creiamo una lista per accumulare solo i valori (le tuple)
     values_list = []
 
     for i in range(NUM_COMPAGNIA):
@@ -149,7 +148,6 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
             ora_p = ora_libera_barca[aliscafo] + timedelta(minutes=15)
             ora_a = ora_p + timedelta(minutes=45)
             
-            # Escape degli apici singoli per evitare errori SQL
             p_safe = partenza.replace("'", "''")
             a_safe = target_city_lombardia.replace("'", "''")
             c_safe = comp_attuale.replace("'", "''")
@@ -201,15 +199,12 @@ def genera_sql_collegamento(citta_info, imbarcazioni, proprieta, nomi_comp):
         ora_libera_barca[cod] = ora_a_dt
         count += 1
         
-    # Costruzione finale dell'unico blocco INSERT INTO
     if values_list:
         sql.append("INSERT INTO COLLEGAMENTO (Num, NomePartenza, OraPartenza, NomeArrivo, OraArrivo, NomeComp, CodiceRegistrazione) VALUES")
         for i, val in enumerate(values_list):
             if i == len(values_list) - 1:
-                # L'ultimo valore termina con il punto e virgola
                 sql.append(val + ";")
             else:
-                # Gli altri valori terminano con la virgola
                 sql.append(val + ",")
                 
     return sql
